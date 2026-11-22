@@ -131,8 +131,8 @@ ul.fb{margin:6px 0 0;padding-left:20px}
 {
 /* ===== All text lives here. To add a language, copy the "en" block, translate the values, and add it to LANGS. ===== */
 const LANGS={en:{
- langName:"English",
- ui:{sub:"AI is not Google",themesLabel:"Pick a theme",saved:n=>`Your ${n} progress is saved. Come back any time.`,resumed:n=>`Welcome back to ${n}. Carrying on where you left off.`,inProgress:"in progress",lede:"Most people type into AI like it's a search box. Seven quick belts show you how to talk to it instead, and get answers that actually fit your life.",
+ langName:"English",aiLang:"English",
+ ui:{sub:"AI is not Google",beltOf:n=>`${n} belt`,themesLabel:"Pick a theme",saved:n=>`Your ${n} progress is saved. Come back any time.`,resumed:n=>`Welcome back to ${n}. Carrying on where you left off.`,inProgress:"in progress",lede:"Most people type into AI like it's a search box. Seven quick belts show you how to talk to it instead, and get answers that actually fit your life.",
   hello:"Welcome, student. Pick the first belt and let's begin.",note:"Progress is saved in this browser. The black-belt test sends your message to Claude, so it asks permission the first time.",
   reset:"Start over",resetDone:"Progress cleared. Ready for the next student.",belt:"belt",earned:"earned",locked:"locked",
   pickQ:"Which message gets the more useful answer?",situation:"Situation",right:"Exactly. Notice why it works.",wrong:"Not quite. Look at the green one.",
@@ -581,13 +581,468 @@ const LANGS={en:{
  free:["You want help deciding whether to repair or replace your old washing machine.",
   "You want to start learning a new language with 15 minutes a day.",
   "You need to write a message to a neighbour about noise late at night, without starting a fight."]
-}};
+},
+es:{
+ langName:"Español",aiLang:"Spanish (Spain)",
+ ui:{sub:"La IA no es Google",themesLabel:"Elige un tema",saved:n=>`Tu progreso en ${n} está guardado. Vuelve cuando quieras.`,resumed:n=>`Bienvenido de nuevo a ${n}. Seguimos donde lo dejaste.`,inProgress:"a medias",
+  beltOf:n=>`Cinturón ${n.toLowerCase()}`,
+  lede:"Casi todo el mundo escribe a la IA como si fuera un buscador. Siete cinturones rápidos te enseñan a hablar con ella y a conseguir respuestas que encajan con tu vida.",
+  hello:"Bienvenido, alumno. Elige el primer cinturón y empezamos.",note:"Tu progreso se guarda en este navegador. En el examen de cinturón negro tu mensaje se envía a Claude, así que la primera vez te pedirá permiso.",
+  reset:"Empezar de nuevo",resetDone:"Progreso borrado. Listo para el siguiente alumno.",belt:"cinturón",earned:"conseguido",locked:"bloqueado",
+  pickQ:"¿Qué mensaje consigue la respuesta más útil?",situation:"Situación",right:"Exacto. Fíjate en por qué funciona.",wrong:"Casi. Mira la opción en verde.",
+  next:"Siguiente",finish:"Terminar cinturón",gotIt:"Correcto.",catch:"Aquí está el truco.",better:"La buena",
+  buildQ:"Monta el mensaje",task:"Encargo",buildHint:"Toca las piezas para añadirlas y mira cómo cambia la respuesta de Claude.",quality:"Lo útil que será la respuesta",
+  yourMsg:"Tu mensaje",likely:"Lo que probablemente responderá Claude",check:"Comprobar mi mensaje",clean:"Muy buen mensaje.",almost:"Casi.",
+  cleanWhy:"Para quién es, qué tienes, los límites y qué quieres recibir. Esa es la diferencia entre buscar y pedir.",
+  fluff:"Quita lo que sobra: las palabras exageradas meten presión pero no información, y los detalles que no cambian el plan solo hacen ruido. Pregúntate: ¿esto cambiaría lo que me sugiere Claude?",missing:"Aún falta:",
+  buildOk:"Cada pieza aporta algo. Bien hecho.",buildNo:"Cada pieza debe contarle a Claude algo que no pueda adivinar.",
+  won:n=>`Cinturón ${n.toLowerCase()} conseguido`,notYet:"Esta vez no",unlocked:s=>`Hábito desbloqueado: ${s}.`,need:(n,t)=>`Necesitas ${n} de ${t}. Las explicaciones son la lección de verdad. Inténtalo otra vez.`,
+  goNext:n=>`Siguiente: cinturón ${n.toLowerCase()}`,retry:"Repetir",bow:"Haz una reverencia a tu nuevo cinturón.",fail:"Todo maestro ha fallado más veces de las que el alumno lo ha intentado.",
+  freeQ:"Escríbelo tú",freeLabel:"Tu mensaje para Claude (invéntate los detalles que necesites)",freePh:"Escríbelo como se lo explicarías a un amigo que te quiere ayudar…",
+  grade:"Puntuar mi mensaje",grading:"Puntuando…",study:"Déjame estudiarlo…",empty:"Primero escribe algo, alumno.",again:"Puntuar otra vez",
+  blackOk:"Cinturón negro. El dojo ya no tiene nada que enseñarte, solo queda practicar.",blackNo:"Buen comienzo. Lee los consejos y vuelve a intentarlo.",
+  byClaude:"Puntuado por Claude",offline:"Revisión rápida sin conexión (aquí no está disponible la puntuación de Claude)",pass:"75 para aprobar",works:"Lo que funciona",improve:"Para mejorar",stronger:"Una versión mejor",
+  run:"Enviárselo a Claude de verdad",askClaude:"Pedir opinión a Claude",tryClaude:"Probarlo en Claude",copied:"Copiado. Si Claude se abre con la caja vacía, solo tienes que pegarlo.",copyFail:"No se ha podido copiar automáticamente. Selecciona el texto de abajo y cópialo.",takeIt:"Llévalo a tu propio Claude (vale con una cuenta gratuita):",
+  coachMsg:(sc,p)=>`Estoy practicando para escribir mejores mensajes a asistentes de IA.\n\nLa situación: ${sc}\n\nMi mensaje:\n"""\n${p}\n"""\n\nPor favor: (1) puntúa mi mensaje del 0 al 100 según lo probable que sea conseguir una respuesta realmente útil y personal, (2) dime qué funciona, (3) dame hasta 3 mejoras concretas y (4) enséñame una versión mejorada. Hazlo de forma cercana y sencilla. Después, (5) responde a mi mensaje original como si te lo hubiera enviado.`,
+  thinking:"Pensando…",limited:"Demasiadas peticiones ahora mismo. Espera un minuto y vuelve a intentarlo.",noReach:"No se ha podido conectar con Claude desde aquí.",other:"Otra situación",
+  h:{long:"Hay suficiente detalle para trabajar.",short:"Añade más detalle. Claude tiene que adivinar demasiado.",num:"Incluye datos concretos, como números o fechas.",noNum:"Añade datos: fechas, cantidades, edades, presupuesto.",
+   me:"Le cuenta a Claude tu situación.",noMe:"Di para quién es y cuál es tu situación.",fmt:"Dice qué quieres recibir.",noFmt:"Di qué quieres recibir: una lista, un mensaje corto, pasos…",
+   hype:"Quita palabras como «perfecto» o «increíble». Meten presión, no información."},
+  rx:{me:/\b(yo|tengo|soy|mi|mis|me|nuestro|nuestra|somos|estoy)\b/i,fmt:/(lista|pasos|corto|breve|palabras|plan|ideas|tabla|mensaje|correo|explica|opciones|frases)/i,hype:/(perfect|increíble|el mejor|la mejor|!!!)/i}},
+ belts:[
+ {name:"Blanco",skill:"Habla, no busques",type:"pick",intro:"Google necesita palabras clave. Claude entiende tu situación, pero solo con los datos que le des. Los adjetivos no son datos.",
+  qs:[
+  {task:"Quieres algo para cenar esta noche.",opts:[
+   {t:"Dame 3 ideas de cena con pollo que sean rápidas, sanas, muy ricas, para toda la familia y fáciles de hacer esta noche.",why:"Parece detallado, pero son todo adjetivos. Claude sigue sin saber qué tienes en la nevera, cuánto tiempo tienes o qué no comen tus hijos."},
+   {t:"Tengo contramuslos de pollo, arroz, un limón y espinacas. 30 minutos, dos niños que odian el picante. ¿3 ideas?",ok:1,why:"Más corto, pero cada palabra es un dato que Claude puede usar: ingredientes, tiempo, quién come y qué evitar."},
+   {t:"¿Qué puedo cocinar esta noche con pollo? Cocino para mi familia y estoy muy cansado, ha sido un día muy largo en el trabajo.",why:"Cercano y personal, pero faltan los datos que deciden la respuesta: qué tienes, cuánto tiempo y qué no gusta."}]},
+  {task:"Te ha llegado una carta oficial llena de jerga y no sabes qué te piden.",opts:[
+   {t:"Me ha llegado una carta de Hacienda sobre mi renta de 2025, con referencia AB-2231-X, y habla de un «requerimiento». ¿Qué significa y qué hago?",why:"Mucho detalle, pero Claude no puede consultar tu número de referencia y no ha visto lo que dice la carta. Solo puede explicarte la palabra en general."},
+   {t:"[foto de la carta] ¿Qué me piden que haga y hay algún plazo?",ok:1,why:"La opción más corta gana. Enséñale la carta real y pregunta exactamente lo que necesitas."},
+   {t:"¿Me puedes explicar qué suelen significar las cartas de Hacienda y qué debería hacer la gente cuando recibe una?",why:"Una pregunta general da una respuesta general. Pregunta por tu carta, no por las cartas."}]},
+  {task:"Quieres comprarte un móvil nuevo.",opts:[
+   {t:"Necesito un móvil nuevo con la mejor cámara, la mejor batería, la pantalla más grande y el procesador más rápido, pero tiene que ser barato.",why:"Detallado pero contradictorio. Algo hay que sacrificar, y Claude elegirá por ti. Di qué te importa más."},
+   {t:"Mi Samsung tiene 4 años y va lento. Mi amiga tiene un iPhone y le encanta. ¿Qué móvil me compro?",why:"Contexto real, pero sin presupuesto ni idea de cómo usas el móvil. Te dará una comparación genérica."},
+   {t:"Máximo 350 €. Sobre todo WhatsApp y fotos de mis hijos, la batería tiene que durar todo el día y odio los móviles grandes. ¿2 o 3 opciones y sus pros y contras?",ok:1,why:"Presupuesto, cómo lo usas, tus prioridades y lo que no te gusta, y pides comparar opciones en vez de «el mejor»."}]},
+  {ask:"¿Qué es lo más útil que puedes añadir?",msg:"Escribe un mensaje a mi jefa pidiendo el viernes libre.",task:"Estás a punto de enviarle esto a Claude.",opts:[
+   {t:"«Que suene profesional y educado.»",why:"Claude ya lo haría. No le da a tu jefa ningún motivo para decir que sí."},
+   {t:"«Es para la boda de mi hermana, y Marta ha aceptado cubrir mi turno.»",ok:1,why:"El motivo y la solución a la principal preocupación de tu jefa (quién te cubre). Eso es lo que consigue un sí."},
+   {t:"«Mi jefa se llama Laura y lleva dos años siendo mi responsable.»",why:"Queda bien en el saludo, pero no cambia que te diga que sí."}]}]},
+ {name:"Amarillo",skill:"Dale los detalles",type:"build",intro:"Monta un mensaje con piezas. Algunas parecen útiles pero no lo son. Elige solo las que cambian la respuesta."},
+ {name:"Naranja",skill:"Sigue la conversación",type:"pick",intro:"A diferencia de un buscador, Claude recuerda lo que le has dicho. Contéstale, corrígele, construye sobre lo que hay. No empieces de cero.",
+  qs:[
+  {task:"La explicación de Claude sobre cómo funciona una hipoteca te ha resultado demasiado complicada.",opts:[
+   {t:"Más sencillo, por favor. Explícamelo como si tuviera 12 años, con un ejemplo con números reales.",ok:1,why:"Di qué falló y qué quieres en su lugar. Claude se adapta al momento."},
+   {t:"¿Me puedes dar un enlace a una web que explique las hipotecas de forma más sencilla?",why:"Vuelta a buscar. Claude te lo puede simplificar aquí mismo, todas las veces que haga falta."},
+   {t:"Abro un chat nuevo y vuelvo a preguntar «explícame las hipotecas», a ver si sale más sencillo.",why:"La misma pregunta probablemente da el mismo nivel de respuesta. Lo que cambia las cosas es decirle que lo necesitas más sencillo."}]},
+  {task:"Claude te ha dado tres recetas. Te gusta la segunda, pero tu invitada es vegetariana.",opts:[
+   {t:"Abro un chat nuevo para que las recetas con pollo no lo confundan.",why:"Un mito muy común. Los mensajes anteriores ayudan, porque son la base sobre la que construye."},
+   {t:"Dame una receta vegetariana con arroz, espinacas y limón para 4 personas, lista en 30 minutos y que les guste a los niños.",why:"Funciona, pero lo has vuelto a escribir todo y has perdido la receta que te gustaba."},
+   {t:"Haz la segunda vegetariana y dime qué tengo que comprar.",ok:1,why:"Recuerda las recetas. Señala la que quieres y di qué cambiar."}]},
+  {task:"Claude ha escrito un mensaje para tu vecino ruidoso. Está bien escrito, pero suena un poco agresivo.",opts:[
+   {t:"Está mal.",why:"Claude sabe que no te gusta, pero no por qué. Puede que cambie lo que no era."},
+   {t:"Bien, pero más suave. Tengo que seguir viviendo al lado. Mantén lo de los horarios.",ok:1,why:"Qué está bien, qué cambiar, por qué y qué mantener. Pocas palabras que lo arreglan."},
+   {t:"Reescríbelo.",why:"Te dará otra versión, pero no necesariamente más amable."}]},
+  {task:"Quieres ayuda para planear una escapada de fin de semana, pero no sabes qué detalles importan.",opts:[
+   {t:"Quiero planear una escapada de fin de semana. Antes de sugerirme nada, hazme las preguntas que necesites, de una en una.",ok:1,why:"Deja que Claude te entreviste. Sabe qué detalles importan, así no tienes que adivinarlos."},
+   {t:"Planea un fin de semana romántico en Sevilla por nuestro aniversario. Nos encanta comer bien y pasear. Que sea muy especial.",why:"Buen comienzo, pero has supuesto qué importa y te has dejado el presupuesto, las fechas y cómo vais a viajar. Claude se lo inventará."},
+   {t:"¿Qué detalles debería incluir cuando le pido a una IA que me planee un viaje?",why:"Cerca, pero tendrás una lista para rellenar tú. Dejar que te pregunte es más rápido."}]}]},
+ {name:"Verde",skill:"Deja que haga el trabajo",type:"pick",intro:"Google encuentra páginas que explican cómo hacer algo. Claude puede hacerlo: escribirlo, planificarlo, practicarlo contigo.",
+  qs:[
+  {task:"Tu casero no ha arreglado la calefacción en tres semanas.",opts:[
+   {t:"¿Cómo se escribe una buena carta de queja a un casero? ¿Qué tiene que incluir?",why:"Buenos consejos, pero luego la tienes que escribir tú. Claude la puede escribir."},
+   {t:"Escribe un mensaje firme y educado a mi casero: la calefacción se estropeó el 2 de noviembre, avisé el 3 y el 10, y sigue sin arreglar. Pide una fecha de reparación esta semana.",ok:1,why:"Claude escribe el mensaje real con tus fechas, listo para enviar. Tú solo lo revisas."},
+   {t:"Mi casero no arregla la calefacción. Se estropeó el 2 de noviembre y he avisado dos veces. ¿Qué derechos tengo como inquilino en España?",why:"También es buena pregunta, siempre que compruebes lo legal. Pero no te arregla la calefacción. Sigues necesitando el mensaje."}]},
+  {task:"Tienes una entrevista de trabajo el viernes y estás nervioso.",opts:[
+   {t:"Dame las 20 preguntas más comunes en una entrevista para recepcionista de hotel, con la respuesta perfecta a cada una para memorizarlas.",why:"Las respuestas «perfectas» memorizadas suenan ensayadas, y leer no es practicar."},
+   {t:"Haz de entrevistador para un puesto de recepcionista de hotel. Hazme una pregunta cada vez, espera mi respuesta y dime cómo mejorarla.",ok:1,why:"Claude puede hacer de personaje. Practicar en voz alta con correcciones es mejor que leer consejos."},
+   {t:"¿Cuáles son los mejores consejos para estar menos nervioso en una entrevista de trabajo?",why:"Ayuda un poco. Lo que de verdad quita los nervios es practicar."}]},
+  {task:"Quieres comer mejor y gastar menos en comida esta semana.",opts:[
+   {t:"Dame recetas baratas y sanas que pueda cocinar esta semana para dos personas. Nos gusta la comida mediterránea y comemos poca carne roja.",why:"Cerca. Pero aún tienes que elegir, repartir los días y hacer la lista de la compra, y «barato» no es una cifra."},
+   {t:"5 cenas para 2 adultos, unos 40 € en total, con productos de un supermercado normal en España. Luego una lista de la compra por secciones.",ok:1,why:"Hace el plan y la lista de una vez, con un presupuesto real."},
+   {t:"¿Qué supermercado de España es el más barato para comer sano?",why:"Una pregunta de buscador. Está bien saberlo, pero no es un plan."}]},
+  {task:"Estás aprendiendo inglés y quieres mejorar.",opts:[
+   {t:"Tradúceme esto al inglés para usarlo en el trabajo: «¿Me puedes mandar el informe antes del viernes?» y «Perdona, llego tarde».",why:"Útil, pero Claude hace el trabajo y tú aprendes muy poco."},
+   {t:"¿Cuál es la mejor app para aprender inglés?",why:"Comportamiento de buscador. Claude puede ser tu compañero de práctica."},
+   {t:"Habla conmigo en inglés sencillo sobre mi fin de semana. Después de cada respuesta, corrige mis errores en español.",ok:1,why:"Un compañero de conversación paciente, a cualquier hora, que te corrige. Casi nadie piensa en usarlo así."}]}]},
+ {name:"Azul",skill:"Enséñale cosas",type:"pick",intro:"Puedes darle a Claude fotos, capturas de pantalla y documentos, pero sigue necesitando saber qué quieres de ellos.",
+  qs:[
+  {task:"Tu portátil muestra un mensaje de error que no entiendes.",opts:[
+   {t:"Mi portátil dice «Tu dispositivo se ha encontrado con un problema y debe reiniciarse» y luego un código que empieza por 0x… No me dio tiempo a ver el resto. Windows 11.",why:"Buen intento, pero el código que no viste es la parte más importante."},
+   {t:"[captura de pantalla] ¿Qué significa esto? Dame la solución paso a paso. No sé mucho de informática.",ok:1,why:"La captura lo recoge todo, y «no sé mucho de informática» te consigue pasos más sencillos."},
+   {t:"¿Por qué los portátiles muestran pantallas azules de error y cómo puedo evitarlo?",why:"Una pregunta general. Necesitas ayuda con tu error."}]},
+  {task:"Te ha llegado un correo largo del colegio de tu hijo y no tienes tiempo de leerlo.",opts:[
+   {t:"[correo pegado] Resúmelo.",why:"Cerca. Un resumen es más corto, pero aún tienes que sacar de ahí lo que tienes que hacer."},
+   {t:"[correo pegado] ¿Qué tengo que hacer exactamente y para cuándo?",ok:1,why:"El mismo esfuerzo, mejor pregunta. Pide lo que te importa: tareas y fechas."},
+   {t:"¿Qué cosas suelen mandar los colegios a las familias antes de Navidad?",why:"No sabe qué ha mandado tu colegio hasta que se lo enseñas."}]},
+  {task:"A tu planta se le están poniendo las hojas amarillas.",opts:[
+   {t:"[foto]",why:"Claude puede intentar adivinarlo solo con la foto, pero el riego y la luz suelen ser la explicación, y eso no lo ve."},
+   {t:"[foto] Está junto a una ventana soleada y la riego cada 3 días. ¿Por qué se ponen amarillas las hojas?",ok:1,why:"La foto más lo que la foto no enseña. Ahora sí puede averiguar qué pasa."},
+   {t:"¿Por qué se ponen amarillas las hojas de las plantas?",why:"Te dará las diez causas más comunes y seguirás sin saber cuál es la tuya."}]},
+  {task:"Estás de viaje y la carta del restaurante está en un idioma que no lees. Eres alérgico a los frutos secos.",opts:[
+   {t:"[foto de la carta] Tradúcela y avísame de todo lo que pueda llevar frutos secos.",ok:1,why:"Foto, traducción y además la comprobación que te importa. Confírmalo igualmente con el camarero: Claude no ve la cocina."},
+   {t:"[foto de la carta] Tradúcela.",why:"La mitad del trabajo. Dile lo que te importa y lo buscará."},
+   {t:"¿Cómo se dice «soy alérgico a los frutos secos» en portugués?",why:"También conviene saberlo, pero no te ayuda a leer la carta."}]}]},
+ {name:"Marrón",skill:"Comprueba lo importante",type:"pick",intro:"Claude es muy capaz, pero puede equivocarse, a veces con mucha seguridad. Aprende cuándo comprobar.",
+  qs:[
+  {task:"Llevas unos días con un dolor raro y le preguntas a Claude.",opts:[
+   {t:"Le describo todos los síntomas con detalle, hago lo que me diga y me salto el médico a no ser que me diga que vaya.",why:"Claude no puede examinarte ni ver tu historial. No dejes que sustituya al médico."},
+   {t:"Lo uso para entender qué puede pasar y preparar preguntas para mi médico.",ok:1,why:"Genial para entender y prepararte. La decisión la toma un profesional, y si es fuerte, pide ayuda urgente."},
+   {t:"Hago la misma pregunta en un chat nuevo y, si las dos respuestas coinciden, me fío y me ahorro la cita.",why:"Dos respuestas de la misma fuente pueden tener el mismo error. Que coincidan no es una prueba."}]},
+  {task:"Preguntas por las noticias de ayer o los horarios del tren de mañana.",opts:[
+   {t:"Me fío de la respuesta. Parece muy segura.",why:"Lo que Claude sabe de serie llega hasta cierta fecha. Puede sonar segura y estar desactualizada."},
+   {t:"Le pido que busque en internet y luego compruebo la web oficial antes de hacer nada.",ok:1,why:"Para lo reciente o lo que cambia, búsqueda en directo y una fuente real."},
+   {t:"Le pregunto lo seguro que está de los horarios y, si dice que mucho, me fío y organizo el día con eso.",why:"La seguridad no es una prueba. Una respuesta equivocada puede venir con mucha seguridad."}]},
+  {task:"Claude te ha resumido un contrato largo y vas a basarte en ese resumen.",opts:[
+   {t:"Me fío del resumen. Se ha leído todas las páginas y es más cuidadoso que yo leyéndolo a las once de la noche.",why:"Los resúmenes pueden saltarse o suavizar un detalle clave, y en un contrato lo importante son los detalles."},
+   {t:"Le pido que cite las frases exactas en las que se basa cada punto y luego leo yo esas frases.",ok:1,why:"Haz que enseñe sus pruebas y comprueba lo importante. Es rápido y pilla los errores."},
+   {t:"No uso la IA para contratos.",why:"Es muy útil para entenderlos. Solo tienes que comprobar antes de fiarte."}]},
+  {task:"Claude te dice algo que estás bastante seguro de que está mal.",opts:[
+   {t:"Le sigo diciendo «te equivocas, revísalo» hasta que cambie la respuesta y me dé la razón.",why:"La presión sin argumentos puede hacer que te dé la razón solo por complacerte. Y entonces no has aprendido nada."},
+   {t:"Lo acepto. Seguro que sabe más que yo.",why:"Tú sabes cosas que Claude no sabe. Dilo."},
+   {t:"Le explico qué creo que está mal y por qué, y le pido que lo vuelva a revisar.",ok:1,why:"Dale tus motivos. Lo reconsiderará y se corregirá o te explicará por qué está seguro."}]}]},
+ {name:"Negro",skill:"Examen libre",type:"free",intro:"Escribe tu propio mensaje desde cero. Claude lo puntúa y luego puedes enviarlo de verdad y ver qué respuesta conseguirías."}
+ ],
+ build:{task:"Conseguir ayuda para organizar el cumpleaños de tu hijo, que cumple 8.",base:"Ayúdame a organizar un cumpleaños.",
+  chips:[
+   {id:"who",t:"Es para mi hijo, que cumple 8 y le encantan los dinosaurios",good:1},
+   {id:"n",t:"Unos 12 niños, en nuestro piso, el sábado por la tarde",good:1},
+   {id:"bud",t:"Presupuesto de unos 80 € en total",good:1},
+   {id:"lim",t:"Un niño es alérgico a los frutos secos",good:1},
+   {id:"fmt",t:"Dame un horario para la tarde y una lista de la compra",good:1},
+   {id:"perf",t:"Que sea absolutamente increíble e inolvidable",good:0},
+   {id:"last",t:"El año pasado lo celebramos en una bolera",good:0},
+   {id:"me",t:"No soy muy creativo, así que necesito ayuda de verdad",good:0}],
+  replies:[
+   "¡Aquí tienes ideas fantásticas! 🎉 Puedes alquilar un local, contratar animadores, un castillo hinchable, una tarta temática de pastelería, bolsas de regalo con juguetes premium…",
+   "¡Claro! Elige una temática, envía invitaciones, prepara algunos juegos, encarga una tarta y compra decoración. ¡Y no te olvides de las bolsas de chuches!",
+   "Una fiesta de dinosaurios para 12 niños en casa: empieza con una «excavación de fósiles» en una bandeja de arena y luego una búsqueda de huevos de dinosaurio…",
+   "Fiesta dino, 12 niños, piso, 80 €, sin frutos secos:\n17:00 Llegada + máscara de dino para colorear (8 €)\n17:30 Excavación de fósiles en bandeja de arena (10 €)\n18:15 Búsqueda de huevos de dino\n18:45 Tarta casera sin frutos secos (12 €)\n…\nLista de la compra: máscaras, arena, dinosaurios de plástico (15 €), platos, zumos… Total ≈ 74 €. Avisa a las demás familias de que la comida es sin frutos secos."]},
+ themes:[
+ {id:"everyday",name:"Vida diaria",blurb:"Cocina, cartas, compras, casa"},
+ {id:"work",name:"Trabajo",blurb:"Correos, reuniones, entrevistas, informes",
+  qs:[
+  [{task:"Un cliente está molesto porque su proyecto va con retraso.",opts:[
+    {t:"Escribe una respuesta profesional, empática y orientada a soluciones para un cliente molesto por un retraso, que mantenga la buena relación.",why:"Suena completo, pero son adjetivos. Claude no sabe qué se retrasó, por qué ni qué le ofreces."},
+    {t:"El cliente está molesto porque el lanzamiento de la web pasó del 1 al 15 de diciembre porque sus textos llegaron tarde. Pide disculpas por el agobio, sin culparle, y confirma la nueva fecha.",ok:1,why:"Qué pasó, por qué, qué evitar y qué confirmar. Cada frase cambia la respuesta."},
+    {t:"Trabajo en una pequeña agencia de marketing y uno de nuestros mejores clientes está muy molesto con nosotros por los plazos de su proyecto. ¿Me ayudas a contestarle?",why:"Contexto real, pero faltan los datos de los que depende la respuesta: qué salió mal y qué vas a hacer."}]},
+   {task:"Un compañero dejó una fórmula en una hoja de cálculo que da error.",opts:[
+    {t:"Tengo una fórmula con BUSCARV, un SI y algunos símbolos de dólar en la columna F que no para de dar error. ¿Qué le pasa?",why:"Detallado, pero Claude no ve la fórmula. Pégala."},
+    {t:"[fórmula pegada] ¿Qué hace esto, en palabras sencillas, y por qué puede dar #N/A?",ok:1,why:"Corto, pero le da a Claude lo real y pregunta justo lo que necesitas."},
+    {t:"¿Cómo funcionan las fórmulas de las hojas de cálculo y cuáles son los errores más comunes?",why:"Un curso, no una solución. Pregunta por tu fórmula."}]},
+   {ask:"¿Qué es lo más útil que puedes añadir?",msg:"Escribe una publicación de LinkedIn sobre mi nuevo trabajo.",task:"Estás a punto de enviarle esto a Claude.",opts:[
+    {t:"«Dónde es, qué voy a hacer y una cosa que me ilusiona de verdad.»",ok:1,why:"Son los datos que solo tú sabes. Convierten una plantilla en tu publicación."},
+    {t:"«Que suene humilde pero impresionante a la vez.»",why:"Un tono, no contenido. Claude sigue sin tener nada real sobre lo que escribir."},
+    {t:"«Pon muchos hashtags para que lo vea más gente.»",why:"Se añaden después en un momento y no mejoran la publicación."}]}],
+  null,
+  [{task:"Claude ha preparado un buen guion de 12 diapositivas, pero solo tienes 10 minutos.",opts:[
+    {t:"Es demasiado largo para mi turno.",why:"Sabe que hay un problema, pero no cuánto recortar ni qué mantener."},
+    {t:"Déjalo en 5 diapositivas para 10 minutos. Mantén la de precios.",ok:1,why:"Construye sobre el buen borrador: cuánto más corto y qué tiene que quedarse."},
+    {t:"Hazme un guion nuevo sobre el mismo tema pero más corto, de 5 o 6 diapositivas, para una reunión breve.",why:"Funciona, pero has tirado el borrador que te gustaba y has vuelto a escribir el encargo."}]},
+   {task:"Necesitas una carta de presentación pero no sabes qué contarle a Claude.",opts:[
+    {t:"Escribe una carta de presentación para un puesto de coordinador de marketing. Soy trabajador, me gusta el trabajo en equipo y me apasiona el marketing.",why:"Tópicos de entrada, tópicos de salida. Todos los candidatos dicen lo mismo."},
+    {t:"¿Qué debe incluir una buena carta de presentación y qué debo evitar?",why:"Te dará una lista y seguirás teniendo que hacer el trabajo."},
+    {t:"Ayúdame a escribir una carta de presentación. Primero pregúntame lo que necesites, de una en una.",ok:1,why:"Deja que Claude te entreviste. Sacará las historias concretas que hacen que una carta destaque."}]},
+   {task:"El correo de Claude para tu equipo es claro pero suena frío.",opts:[
+    {t:"Más cercano, por favor. Han trabajado mucho este mes. Deja la parte del plazo tal cual.",ok:1,why:"Qué cambiar, por qué y qué no tocar."},
+    {t:"Reescríbelo.",why:"Te dará otro correo, no necesariamente más cercano."},
+    {t:"Abro un chat nuevo y pido un correo amable para mi equipo sobre el nuevo plazo.",why:"Pierdes la estructura clara que ya tenías."}]}],
+  [{task:"Tienes notas desordenadas de una reunión.",opts:[
+    {t:"¿Cómo se redacta una buena acta de reunión? ¿Qué formato usan las empresas y qué debe incluir?",why:"Consejos para hacer el trabajo. Claude puede hacerlo directamente."},
+    {t:"[notas pegadas] Conviértelo en decisiones, tareas con responsable y preguntas pendientes.",ok:1,why:"Claude hace el trabajo, en el formato que necesita tu equipo."},
+    {t:"¿Cuál es la mejor app para tomar notas de reuniones automáticamente?",why:"Una pregunta de buscador. Ya tienes las notas."}]},
+   {task:"Quieres pedir una subida de sueldo y estás nervioso.",opts:[
+    {t:"Dame los 10 mejores consejos para negociar una subida de sueldo y las frases exactas que usa la gente que lo consigue.",why:"Leer frases no es lo mismo que decirlas bajo presión."},
+    {t:"Haz de mi jefa. Le voy a pedir un 10 % más. Ponme pegas como ella y luego dime qué podría decir mejor.",ok:1,why:"Ensaya la conversación real, con las pegas incluidas, antes de que cuente."},
+    {t:"¿Cuál es el sueldo medio de mi puesto en España?",why:"Útil saberlo (pídele que lo busque), pero no es prepararse."}]},
+   {task:"Tienes 40 opiniones de clientes en una hoja de cálculo.",opts:[
+    {t:"[opiniones pegadas] Agrúpalas por temas, cuenta cuántas hay de cada uno y dame las 3 quejas principales con un ejemplo.",ok:1,why:"Horas de lectura hechas en segundos, y puedes comprobar los ejemplos."},
+    {t:"Léete estas opiniones y dime si los clientes están contentos en general o no.",why:"Cerca, pero un sí o un no desperdicia todo lo que podrías aprender."},
+    {t:"¿Cuál es la mejor forma de analizar opiniones de clientes? ¿Qué herramientas y métodos usan las grandes empresas?",why:"Claude es la herramienta. Dale las opiniones."}]}],
+  [{task:"Hay un gráfico en un informe que no entiendes.",opts:[
+    {t:"En nuestro informe hay un gráfico de barras azules y naranjas con una línea de puntos que sube a la derecha. ¿Qué significa?",why:"Claude no puede leer los números a partir de tu descripción. Enséñaselo."},
+    {t:"[captura del gráfico] ¿Qué dice esto realmente? En dos frases.",ok:1,why:"El gráfico real y un límite claro para la respuesta."},
+    {t:"¿Cómo se leen los gráficos de barras y de líneas de los informes de empresa?",why:"Una lección, no una respuesta sobre tu gráfico."}]},
+   {task:"Tu jefe te manda una normativa interna de 15 páginas.",opts:[
+    {t:"[documento] Resúmelo.",why:"Cerca. Tendrás un resumen de todo, no de lo que te importa."},
+    {t:"[documento] Soy jefe de equipo. ¿Qué cambia para mí y para mi equipo, y qué tenemos que hacer y para cuándo?",ok:1,why:"Quién eres y la pregunta que de verdad necesitas responder."},
+    {t:"¿Qué suelen decir hoy en día las normativas de las empresas sobre teletrabajo y gastos, y qué cambia normalmente cuando se actualizan?",why:"No conoce la normativa de tu empresa hasta que se la enseñas."}]},
+   {task:"Has dibujado en papel un proceso de trabajo.",opts:[
+    {t:"[foto del boceto]",why:"Claude lo ve, pero ¿qué quieres? ¿Un diagrama limpio, pasos, un correo?"},
+    {t:"[foto del boceto] Conviértelo en pasos numerados y claros que pueda pegar en un correo.",ok:1,why:"Enséñalo y di qué quieres recibir."},
+    {t:"Dibujé cajas para pedido, comprobar stock, enviar y facturar, con flechas entre ellas y algunas notas. ¿Me lo pasas a limpio?",why:"Vale para bocetos sencillos, pero la foto recoge las notas y flechas que se te olvidaría escribir."}]}],
+  [{task:"Claude te da una estadística para tu presentación.",opts:[
+    {t:"La uso. Es muy concreta, con decimales y todo, así que tiene que venir de datos reales.",why:"La precisión no es una prueba. Un número inventado puede parecer muy preciso."},
+    {t:"Le pido la fuente, la abro y solo uso el número si de verdad aparece ahí.",ok:1,why:"Todo lo que vayas a presentar se comprueba en una fuente real."},
+    {t:"Le pregunto «¿estás seguro?» y lo uso si dice que sí.",why:"Puede decir que sí y estar equivocado. Comprueba la fuente."}]},
+   {task:"Claude ha escrito un correo a un cliente con precios y fechas.",opts:[
+    {t:"Lo envío. Le di yo los precios, así que estarán bien.",why:"Al copiar números se cuelan errores. Y lo firmas tú."},
+    {t:"Le pido a Claude que revise su propio correo y lo envío sin leerlo.",why:"Que se revise ayuda, pero no es lo mismo que revisarlo tú."},
+    {t:"Lo leo antes de enviarlo y compruebo cada nombre, número y fecha.",ok:1,why:"Claude redacta, tú apruebas. Sobre todo si hay dinero de por medio."}]},
+   {task:"Quieres ayuda con un contrato confidencial de un cliente.",opts:[
+    {t:"Compruebo qué normas tiene mi empresa sobre qué herramientas de IA se pueden usar con información confidencial.",ok:1,why:"Muchas empresas tienen normas sobre qué herramientas pueden ver datos de clientes. Conoce las tuyas primero."},
+    {t:"Lo pego. Las herramientas de IA nunca guardan ni miran lo que escribes.",why:"No lo des por hecho. Depende de cada herramienta y de cada empresa."},
+    {t:"Borro el nombre y la dirección del cliente y pego el resto. Sin el nombre, todo lo demás se puede compartir sin problema.",why:"Otros datos pueden seguir identificándolo. Sigue las normas de tu empresa."}]}]],
+  build:{task:"Conseguir ayuda para escribir un correo pidiendo a tu equipo que cambie a un nuevo sistema de citas.",base:"Escribe un correo a mi equipo sobre el nuevo sistema.",
+   chips:[
+    {id:"a",t:"Dirijo un equipo de 6 personas en una clínica dental",good:1},
+    {id:"b",t:"Pasamos de agendas en papel a citas online el 1 de febrero",good:1},
+    {id:"c",t:"Parte del equipo se agobia con la tecnología",good:1},
+    {id:"d",t:"Pide a todos que vengan a una formación de 30 minutos el 25 de enero",good:1},
+    {id:"e",t:"Menos de 150 palabras, cercano, sin tecnicismos",good:1},
+    {id:"x",t:"Que sea inspirador y motivador",good:0},
+    {id:"y",t:"El programa cuesta 49 € al mes",good:0},
+    {id:"z",t:"Llevo 9 años trabajando aquí",good:0}],
+   replies:["Querido equipo: ¡me hace muchísima ilusión anunciaros un emocionante nuevo capítulo en nuestro camino! Juntos abrazaremos la innovación y transformaremos nuestra forma de trabajar…",
+    "Hola a todos: pronto tendremos un sistema nuevo. Ya os daremos más detalles. Estad preparados para usarlo. ¡Gracias!",
+    "Hola, equipo: a partir del 1 de febrero pasamos de las agendas en papel a las citas online. Sé que los cambios pueden agobiar…",
+    "Hola, equipo:\nEl 1 de febrero pasamos de las agendas en papel a las citas online. Sé que la tecnología nueva puede imponer, así que el 25 de enero haremos una formación de 30 minutos. Es sencillo y estaré ahí para ayudar. Apuntadlo en la agenda (la de papel, por última vez).\nGracias, Ana"]},
+  free:["Tienes que rechazar con educación una reunión para la que no tienes tiempo.","Quieres ayuda para preparar una actualización de 5 minutos para la reunión de equipo.","Tienes que pedirle a un compañero que deje de interrumpirte en las reuniones."]},
+ {id:"health",name:"Salud y deporte",blurb:"Ejercicio, comida, sueño, citas",
+  qs:[
+  [{task:"Quieres empezar a hacer ejercicio.",opts:[
+    {t:"Dame un plan de entrenamiento eficaz, sostenible y motivador que me ponga en muy buena forma.",why:"Todo adjetivos. Claude no sabe tu edad, tu forma física, si tienes lesiones ni cuánto tiempo tienes."},
+    {t:"Tengo 45 años, llevo años sin hacer ejercicio y me molesta la rodilla izquierda. 3 × 30 min a la semana en casa, sin material. Plan de 4 semanas.",ok:1,why:"Punto de partida, límites, tiempo y lugar. Un plan hecho para ti, no para internet."},
+    {t:"Este año quiero ponerme en forma de verdad. Lo he intentado antes y siempre lo dejo a las pocas semanas. Me frustra muchísimo.",why:"Contexto sincero y útil, pero sigues teniendo que dar los datos: tiempo, nivel, límites."}]},
+   {task:"Quieres desayunos más sanos.",opts:[
+    {t:"ideas desayuno sano",why:"Palabras clave de buscador. Te saldrán los mismos bols de fruta que a todo el mundo."},
+    {t:"¿Cuál es el desayuno más sano del mundo según la ciencia más reciente? Quiero tomar el mejor.",why:"No existe uno. Depende de ti."},
+    {t:"Soy vegetariano, salgo de casa a las 7:30 y odio cocinar por la mañana. ¿5 desayunos rápidos que llenen?",ok:1,why:"Dieta, tiempo y lo que de verdad vas a hacer. Mucho más fácil de mantener."}]},
+   {ask:"¿Qué es lo más útil que puedes añadir?",msg:"Hazme un plan para correr.",task:"Estás a punto de enviarle esto a Claude.",opts:[
+    {t:"«Que sea exigente pero divertido.»",why:"Una sensación, no un dato. ¿Exigente para quién?"},
+    {t:"«Me acabo de comprar zapatillas nuevas.»",why:"Bien por ti, pero no cambia el plan."},
+    {t:"«Ahora aguanto 10 minutos corriendo; quiero correr 5 km en 8 semanas.»",ok:1,why:"Dónde estás y adónde quieres llegar. Ese es todo el plan."}]}],
+  null,
+  [{task:"El plan de Claude tiene 5 días de entrenamiento, pero tú solo tienes 3.",opts:[
+    {t:"Solo puedo 3 días. Mételo en lunes, miércoles y viernes y quita lo menos importante.",ok:1,why:"Construye sobre el plan y le dices cómo decidir qué recortar."},
+    {t:"Esto no me sirve.",why:"¿Por qué? Claude tiene que adivinarlo."},
+    {t:"Hazme un plan nuevo de 3 días para principiante con mala rodilla, 30 minutos, en casa, sin material.",why:"Funciona, pero lo has vuelto a escribir todo y has perdido los ejercicios que te gustaban."}]},
+   {task:"Quieres dormir mejor pero no sabes qué datos importan.",opts:[
+    {t:"Dame los 15 mejores consejos para dormir mejor que recomiendan los científicos y los médicos del sueño, por orden de importancia.",why:"Una lista genérica. La mitad no irá contigo."},
+    {t:"Quiero dormir mejor. Pregúntame primero por mis hábitos, de una en una, antes de darme consejos.",ok:1,why:"Deja que Claude averigüe qué pasa antes de aconsejarte."},
+    {t:"¿Por qué no puedo dormir?",why:"Sin saber nada de ti, solo puede adivinar."}]},
+   {task:"Un ejercicio del plan te hace daño en la rodilla.",opts:[
+    {t:"Dame otro plan.",why:"Tiras todo el plan por un solo ejercicio."},
+    {t:"Este plan es malo.",why:"Claude no sabe qué falla."},
+    {t:"Las sentadillas me hacen daño en la rodilla. Cámbialas por algo más suave para las rodillas y deja el resto.",ok:1,why:"Exactamente qué cambiar y qué mantener. Y si el dolor sigue, ve al fisio."}]}],
+  [{task:"Tienes cita con el médico y siempre se te olvida qué preguntar.",opts:[
+    {t:"¿Cuáles son las causas más comunes del dolor de cabeza por la mañana, y cuáles son lo bastante graves como para preocuparse?",why:"Interesante, pero no te ayuda a aprovechar tus 10 minutos con el médico."},
+    {t:"Ayúdame a hacer una lista de preguntas para el médico. Dolor de cabeza casi todas las mañanas desde hace 2 semanas, peor cuando duermo mal.",ok:1,why:"Claude te prepara. El médico diagnostica."},
+    {t:"¿A qué especialista debería ir por los dolores de cabeza?",why:"Pregunta razonable, pero ya tienes la cita."}]},
+   {task:"Pasas todo el día sentado en una oficina y te duele el cuello.",opts:[
+    {t:"Búscame un buen vídeo de YouTube de estiramientos en la oficina.",why:"Comportamiento de buscador. Claude te puede preparar la rutina."},
+    {t:"Una rutina de 5 minutos en la mesa para cuello y lumbares que nadie en la oficina note.",ok:1,why:"Corta, concreta y hecha para tu situación."},
+    {t:"¿Qué beneficios tiene estirar para la gente que trabaja en oficina?",why:"Ya sabes que ayuda. Lo que necesitas es la rutina."}]},
+   {task:"Picoteas por la noche y quieres dejarlo.",opts:[
+    {t:"Como galletas a las 10 de la noche viendo la tele. Ayúdame con algunos cambios y una rutina de noche que me lo ponga más fácil.",ok:1,why:"El hábito real y un plan que sí seguirías."},
+    {t:"Dame un plan estricto sin azúcar desde mañana, sin excepciones.",why:"Las normas estrictas de golpe suelen salir mal. Pide algo que puedas mantener."},
+    {t:"¿Por qué es malo el azúcar y qué le hace exactamente comerlo de noche a tu cuerpo y a tu sueño?",why:"Saber el porqué rara vez cambia el hábito. Un plan sí."}]}],
+  [{task:"Los resultados de tu análisis de sangre están llenos de números y abreviaturas.",opts:[
+    {t:"Me ha salido el colesterol un poco alto, algo así como doscientos y pico. ¿Es malo?",why:"Importan los números exactos y los valores de referencia. Enséñale la hoja."},
+    {t:"[foto de los resultados] Explícame cada línea en palabras sencillas y cuáles debería comentar con mi médico.",ok:1,why:"Entiéndelos y prepárate. Quien los interpreta para ti sigue siendo tu médico."},
+    {t:"¿Cómo es un análisis de sangre normal para alguien de mi edad?",why:"General. Tus resultados los tienes delante."}]},
+   {task:"Te han recetado un medicamento nuevo y el prospecto es diminuto y larguísimo.",opts:[
+    {t:"[foto del prospecto] ¿Lo puedo tomar con ibuprofeno y debo evitar el alcohol? No tomo nada más.",ok:1,why:"El prospecto real y tus preguntas reales. Luego confírmalo en la farmacia."},
+    {t:"[foto del prospecto] Resúmelo.",why:"Tendrás de todo menos las respuestas a tus preguntas."},
+    {t:"¿Qué efectos secundarios suelen tener los medicamentos más comunes y a cuáles hay que estar más atento?",why:"Demasiado general. Pregunta por el tuyo."}]},
+   {task:"Tu gimnasio tiene el entrenamiento del día en una pizarra llena de abreviaturas.",opts:[
+    {t:"[foto de la pizarra]",why:"Puede leerla, pero ¿qué necesitas? ¿Una explicación? ¿Versiones más fáciles?"},
+    {t:"¿Qué significa AMRAP?",why:"Útil, pero tendrías que preguntar las abreviaturas de una en una."},
+    {t:"[foto de la pizarra] Soy principiante. Explícame cada ejercicio y dame una versión más fácil de cada uno.",ok:1,why:"Enséñala y di quién eres y qué necesitas."}]}],
+  [{task:"Claude dice que un suplemento podría darte más energía.",opts:[
+    {t:"Lo compro. Claude me ha explicado cómo funciona con mucho detalle científico.",why:"El detalle no es una prueba. Pide fuentes y compruébalas."},
+    {t:"Le pregunto qué pruebas hay y lo consulto con el farmacéutico o el médico antes de tomarlo.",ok:1,why:"Sobre todo si tomas otros medicamentos. Los suplementos pueden interaccionar."},
+    {t:"Le pregunto a Claude si está completamente seguro de los beneficios y lo compro si dice que sí.",why:"Estar seguro no es una prueba."}]},
+   {task:"De repente tienes un dolor fuerte en el pecho.",opts:[
+    {t:"Llamo al 112 ahora mismo.",ok:1,why:"Las urgencias no pasan por un chat. Primero pide ayuda."},
+    {t:"Le describo los síntomas a Claude con detalle y le pregunto si debería preocuparme.",why:"Cada minuto cuenta. Llama al 112 y las preguntas, después."},
+    {t:"Le pido a Claude que me busque la farmacia de guardia más cercana.",why:"No para un dolor en el pecho. Llama al 112."}]},
+   {task:"Dos chats te han dado consejos distintos sobre cuántas veces entrenar.",opts:[
+    {t:"Me quedo con el que sonaba más seguro.",why:"Sonar seguro no significa tener razón."},
+    {t:"Pregunto una tercera vez y me quedo con la respuesta que salga dos veces.",why:"Una votación entre suposiciones sigue siendo una suposición."},
+    {t:"Le pregunto de qué depende cada respuesta y lo compruebo en una fuente de salud fiable.",ok:1,why:"Muchas veces las dos valen para personas distintas. Averigua cuál encaja contigo."}]}]],
+  build:{task:"Conseguir un plan de ejercicio en casa que de verdad vayas a seguir.",base:"Hazme un plan de entrenamiento.",
+   chips:[
+    {id:"a",t:"Tengo 40 años y llevo años sin hacer ejercicio",good:1},
+    {id:"b",t:"Tengo mal la zona lumbar, nada que la fuerce",good:1},
+    {id:"c",t:"20 minutos, 3 mañanas a la semana, en casa",good:1},
+    {id:"d",t:"Sin material, solo una esterilla",good:1},
+    {id:"e",t:"Un plan de 4 semanas que se vaya complicando un poco cada semana",good:1},
+    {id:"x",t:"Que sea el plan más eficaz de la historia",good:0},
+    {id:"y",t:"De pequeño jugaba al fútbol en el colegio",good:0},
+    {id:"z",t:"La semana pasada me compré zapatillas nuevas",good:0}],
+   replies:["🔥 PLAN DE TRANSFORMACIÓN DEFINITIVO 🔥 Día 1: 100 burpees, 5 km corriendo, peso muerto 5×5…",
+    "Aquí tienes un plan: lunes pecho, martes pierna, miércoles espalda, jueves hombro, viernes brazo. Usa las máquinas del gimnasio…",
+    "Un plan suave de 3 días en casa: empieza con 5 minutos de movilidad y luego sentadillas con tu peso, puente de glúteo…",
+    "Semana 1 (20 min, solo esterilla, cuidando la espalda):\nLun/Mié/Vie: 4 min de calentamiento · puente de glúteo 3×10 · bird-dog 3×8 por lado · flexiones en pared 3×10 · 3 min de estiramientos\nSemanas 2–4: sube repeticiones cada semana…\nSi algo te molesta en la espalda, sáltalo y dímelo, y lo cambio."]},
+  free:["Quieres crear el hábito de beber más agua y caminar más.","Quieres preparar preguntas para una cita de fisioterapia por un dolor de hombro.","Quieres comidas más sanas para llevarte al trabajo."]},
+ {id:"money",name:"Dinero y papeleo",blurb:"Facturas, presupuestos, trámites",
+  qs:[
+  [{task:"Estás eligiendo entre dos ofertas de luz.",opts:[
+    {t:"Ayúdame a elegir una compañía de luz más barata, más verde, más flexible, con muy buena atención al cliente y sin letra pequeña.",why:"Una lista de deseos con adjetivos. Claude no puede comparar ofertas que no ha visto."},
+    {t:"¿Cuál es la mejor tarifa de luz de España ahora mismo?",why:"No existe una mejor para todos. Depende de cuánto y cuándo gastas."},
+    {t:"[fotos de las dos ofertas] Gasto unos 250 kWh al mes, sobre todo por la tarde-noche. ¿Cuál me sale más barata al año y por cuánto?",ok:1,why:"Las ofertas reales y tu consumo. Después, repasa las cuentas."}]},
+   {task:"Quieres ahorrar para unas vacaciones.",opts:[
+    {t:"Quiero juntar 1.200 € para un viaje el próximo agosto. Cobro una vez al mes y puedo apartar 100–150 €. ¿Un plan sencillo?",ok:1,why:"Objetivo, plazo y lo que de verdad puedes apartar. Eso es un plan."},
+    {t:"¿Cómo puedo ahorrar más? Soy un desastre con el dinero y siempre llego justo a final de mes.",why:"Real, pero sin números. Te dará consejos genéricos."},
+    {t:"mejores trucos ahorrar 2026",why:"Palabras clave de buscador. No es tu situación."}]},
+   {ask:"¿Qué es lo más útil que puedes añadir?",msg:"Escribe una carta para darme de baja del gimnasio.",task:"Estás a punto de enviarle esto a Claude.",opts:[
+    {t:"«Que sea firme para que no intenten retenerme.»",why:"Un tono. Sigue sin tener lo que necesita una baja."},
+    {t:"«Mi número de socio, la fecha en que quiero la baja y lo que dice mi contrato sobre el preaviso.»",ok:1,why:"Los datos que hacen que la baja funcione de verdad."},
+    {t:"«Es porque me mudo de casa.»",why:"Opcional. Normalmente no hace falta dar motivos."}]}],
+  null,
+  [{task:"El presupuesto de Claude incluye gastos de coche, pero no tienes coche.",opts:[
+    {t:"Este presupuesto está mal.",why:"¿Qué parte? Tiene que adivinarlo."},
+    {t:"No tengo coche. Quita eso y pasa los 150 € a ahorro.",ok:1,why:"El arreglo y adónde va el dinero. Todo lo demás se queda."},
+    {t:"Hazme un presupuesto mensual nuevo para alguien sin coche, con 1.800 € de ingresos y 700 € de alquiler.",why:"Funciona, pero lo has vuelto a escribir y has perdido lo que ya habíais acordado."}]},
+   {task:"Es la primera vez que haces la declaración de la renta.",opts:[
+    {t:"Explícame con todo detalle todas las deducciones y desgravaciones que existen en España, para que no se me escape nada.",why:"Horas de lectura, casi todo sin relación contigo."},
+    {t:"Voy a hacer la renta por primera vez. Pregúntame lo que necesites, de una en una, y luego dame una lista de pasos.",ok:1,why:"Claude averigua qué te afecta. Luego compruébalo en la web de la Agencia Tributaria o con un gestor."},
+    {t:"¿Qué es la declaración de la renta?",why:"Para empezar está bien, pero no te la hace."}]},
+   {task:"La reclamación que ha escrito Claude para tu banco está bien, pero es demasiado larga.",opts:[
+    {t:"Más corta.",why:"Cerca, pero puede recortar las fechas y el importe, que es lo importante."},
+    {t:"Escribe una reclamación corta a mi banco por un cargo de 35 € del 3 de octubre.",why:"Empezar de cero tira el buen borrador."},
+    {t:"La mitad de larga. Mantén las fechas y el importe.",ok:1,why:"Cuánto recortar y qué tiene que quedarse."}]}],
+  [{task:"Tus movimientos del banco son un lío.",opts:[
+    {t:"[movimientos pegados] Agrúpalos por categorías, suma cada una y enséñame los 3 sitios donde más puedo recortar.",ok:1,why:"Claude ordena y hace las cuentas. Tú decides."},
+    {t:"¿Qué categorías debería tener un presupuesto familiar y qué porcentaje de los ingresos debería ir a cada una?",why:"Teoría. Claude puede trabajar con tus números reales."},
+    {t:"¿Cuál es la mejor app para llevar las cuentas?",why:"Una pregunta de buscador. Puedes hacerlo ahora mismo."}]},
+   {task:"Tienes que llamar a tu compañía de internet para darte de baja y odias llamar por teléfono.",opts:[
+    {t:"¿Es legal que las compañías de internet pongan tantas trabas para dar de baja un contrato? ¿Qué derechos tengo?",why:"Buena pregunta, pero no te ayuda a superar la llamada."},
+    {t:"¿Qué suelen decir las compañías cuando intentas darte de baja?",why:"Leer su guion no es lo mismo que practicar tus respuestas."},
+    {t:"Haz de teleoperador que intenta retenerme. Practico a decir que no y luego me dices qué funcionó.",ok:1,why:"Ensáyalo, para que la llamada real te resulte conocida."}]},
+   {task:"Tienes que rellenar un formulario oficial en un idioma que no lees bien.",opts:[
+    {t:"[foto del formulario] Tradúcelo palabra por palabra.",why:"Cerca, pero con la traducción sigues sin saber qué poner."},
+    {t:"[foto del formulario] Explícame cada casilla y qué debo poner. Trabajo por cuenta ajena, soltero, sin hijos.",ok:1,why:"El formulario más tu situación dan respuestas reales. Revísalo igualmente antes de entregarlo."},
+    {t:"¿Cómo se rellenan los formularios de la administración?",why:"Demasiado general. Enséñale este."}]}],
+  [{task:"Tu factura de la luz se ha duplicado.",opts:[
+    {t:"[foto de la factura] ¿Por qué es el doble que el mes pasado? Señálame las líneas que han cambiado.",ok:1,why:"Puede leer la factura línea a línea y encontrar el cambio."},
+    {t:"Mi factura de la luz ha pasado de unos 60 € a 120 € este mes y no tengo ni idea de por qué. ¿Qué puede ser?",why:"Te dará una lista de causas posibles, no tu causa."},
+    {t:"¿Por qué está tan cara la luz?",why:"General. La respuesta está en tu factura."}]},
+   {task:"No sabes si tu nómina está bien.",opts:[
+    {t:"[foto de la nómina] ¿Está bien?",why:"¿Bien comparada con qué? No sabe lo que acordaste."},
+    {t:"[foto de la nómina] Mi contrato dice 24.000 € brutos al año. Explícame cada descuento y si el neto parece correcto.",ok:1,why:"La nómina más lo que acordaste. Ahora sí puede comprobarlo."},
+    {t:"¿Qué descuentos suelen aparecer en una nómina?",why:"General. Enséñale la tuya."}]},
+   {task:"Te robaron el móvil de vacaciones y quieres saber si el seguro lo cubre.",opts:[
+    {t:"[PDF de la póliza] Resúmeme el seguro.",why:"Tendrás de todo menos la respuesta que necesitas."},
+    {t:"¿Los seguros de hogar o de viaje suelen cubrir los móviles robados en el extranjero durante las vacaciones?",why:"«Suelen» no es tu póliza."},
+    {t:"[PDF de la póliza] ¿Me cubre si me roban el móvil en el extranjero? Cítame la frase.",ok:1,why:"Haz la pregunta real y pide la frase exacta para comprobarla."}]}],
+  [{task:"Claude calcula cuánto ahorrarías cambiando de hipoteca.",opts:[
+    {t:"Me fío. Los ordenadores son buenos con las cuentas.",why:"Un chat de IA puede equivocarse en las cuentas, sobre todo si hay muchos pasos."},
+    {t:"Le pido que enseñe los pasos, lo compruebo con un simulador de hipotecas y lo confirmo con el banco.",ok:1,why:"Las decisiones de mucho dinero se comprueban dos veces."},
+    {t:"Lo vuelvo a preguntar en un chat nuevo y, si sale el mismo número las dos veces, lo uso.",why:"El mismo error se puede repetir."}]},
+   {task:"Claude te explica una inversión que «normalmente» da un 8 % al año.",opts:[
+    {t:"La uso para aprender lo básico y los riesgos, y hablo con un asesor regulado antes de invertir.",ok:1,why:"Claude puede explicar. No puede responsabilizarse de tu dinero."},
+    {t:"Invierto. Me ha explicado la rentabilidad con mucho detalle.",why:"«Normalmente» esconde el riesgo. El detalle no es una garantía."},
+    {t:"Le pido que me elija el fondo exacto e invierto directamente sin comprobar nada.",why:"Nunca dejes una decisión de dinero sin comprobar."}]},
+   {task:"Claude te dice el plazo para un pago a Hacienda.",opts:[
+    {t:"Se lo pregunto dos veces. Si las fechas coinciden, es correcto.",why:"Dos respuestas iguales pueden tener la misma información desactualizada."},
+    {t:"Me fío de la fecha y la apunto en el calendario.",why:"Los plazos cambian, y los recargos son reales."},
+    {t:"Compruebo la fecha en la web de la Agencia Tributaria o con mi gestor.",ok:1,why:"Las fechas oficiales salen de fuentes oficiales."}]}]],
+  build:{task:"Conseguir un presupuesto mensual sencillo que encaje con tu vida.",base:"Hazme un presupuesto.",
+   chips:[
+    {id:"a",t:"Cobro 1.900 € netos al mes",good:1},
+    {id:"b",t:"Alquiler 750 €, facturas unos 150 €",good:1},
+    {id:"c",t:"Quiero ahorrar 200 € al mes para un viaje",good:1},
+    {id:"d",t:"Suelo gastar de más en comer fuera",good:1},
+    {id:"e",t:"Ponlo en una tabla sencilla que pueda copiar",good:1},
+    {id:"x",t:"Que sea el presupuesto perfecto",good:0},
+    {id:"y",t:"Mi amiga consigue ahorrar muchísimo",good:0},
+    {id:"z",t:"Me pagan por transferencia",good:0}],
+   replies:["¡El presupuesto perfecto sigue la regla 50/30/20! Destina el 50 % a necesidades, el 30 % a caprichos y el 20 % al ahorro para lograr la libertad financiera…",
+    "Un buen presupuesto controla ingresos y gastos. Apunta tus ingresos, tus gastos fijos y los variables, y busca dónde ahorrar…",
+    "Con 1.900 € netos y 900 € entre alquiler y facturas, te quedan 1.000 €. Primero apartamos los 200 € del viaje…",
+    "Categoría | Al mes\nAlquiler | 750 €\nFacturas | 150 €\nAhorro viaje | 200 € (el día de cobro, lo primero)\nCompra | 280 €\nComer fuera | 120 € (en efectivo o con otra tarjeta, para ver cuándo se acaba)\nTransporte | 80 €\nOtros | 320 €\nTotal | 1.900 €"]},
+  free:["Estás decidiendo si amortizar antes un préstamo pequeño o guardar el dinero como ahorro.","Tienes que pedir a una empresa que te devuelva el dinero de un producto defectuoso.","Quieres organizar todos tus documentos importantes y fechas límite del año."]},
+ {id:"gaming",name:"Videojuegos y aficiones",blurb:"Juegos, cartas, manualidades, música",
+  qs:[
+  [{task:"Te has atascado con un jefe.",opts:[
+    {t:"Dame una estrategia increíble, detallada y de nivel profesional para por fin vencer a este jefe dificilísimo.",why:"¿Qué jefe? ¿Qué juego? ¿Qué te mata? Todo adjetivos, ningún dato."},
+    {t:"Atascado con el jefe final de Hollow Knight. Aguijón al máximo, 7 máscaras. Su ataque de embestida me mata siempre. ¿Cómo lo esquivo?",ok:1,why:"Juego, jefe, tu equipo y el problema exacto. Y si el juego es reciente, pídele que busque."},
+    {t:"Llevo tres días atascado con este jefe y estoy tan frustrado que quiero tirar el mando.",why:"Muy comprensible, pero a Claude no le sirve de nada."}]},
+   {task:"Quieres un juego nuevo.",opts:[
+    {t:"mejores juegos 2026",why:"Palabras clave de buscador. Te saldrá lo popular, no lo que te va a ti."},
+    {t:"Me encantaron Stardew Valley y Zelda: Breath of the Wild. 30 min por la noche en Switch, nada de miedo. ¿3 recomendaciones y por qué encaja cada una?",ok:1,why:"Tus gustos, consola, tiempo y límites, y además el porqué para que puedas juzgar."},
+    {t:"¿Cuál es el mejor videojuego de la historia y por qué lo piensa tanta gente? Quiero jugar al mejor.",why:"Un debate divertido, pero no te va a encontrar tu próximo juego."}]},
+   {ask:"¿Qué es lo más útil que puedes añadir?",msg:"Ayúdame a montar un mazo para mi liga de cartas.",task:"Estás a punto de enviarle esto a Claude.",opts:[
+    {t:"«Que sea imbatible.»",why:"Ningún mazo es imbatible, y esto no le da a Claude nada con lo que trabajar."},
+    {t:"«Qué juego y qué formato, las cartas que tengo y mi presupuesto para comprar más.»",ok:1,why:"Las condiciones que deciden cada carta del mazo."},
+    {t:"«Mi carta favorita es la del dragón.»",why:"Divertido, y conviene decirlo si la quieres en el mazo, pero no es lo principal."}]}],
+  null,
+  [{task:"La guía de Claude para pintar miniaturas usa aerógrafo, y tú no tienes.",opts:[
+    {t:"No tengo aerógrafo. Rehaz el paso 2 solo con pinceles.",ok:1,why:"La limitación y el paso exacto que hay que cambiar."},
+    {t:"Esto no me sirve.",why:"Tiene que adivinar por qué."},
+    {t:"Explícame cómo pintar miniaturas solo con pinceles, para principiantes, paso a paso, con un estilo de fantasía oscura.",why:"Funciona, pero has perdido la guía que estabas siguiendo."}]},
+   {task:"Quieres dirigir una partida de rol de una sesión para tus amigos, pero nunca lo has hecho.",opts:[
+    {t:"Escríbeme una aventura de fantasía épica e inolvidable para mis amigos.",why:"¿Épica para quién? No conoce a tu grupo, el sistema ni cuánto tiempo tenéis."},
+    {t:"Ayúdame a preparar una partida de una sesión. Primero hazme las preguntas que necesites, de una en una.",ok:1,why:"Claude sabe qué tiene que decidir un máster. Deja que pregunte."},
+    {t:"¿Qué hace que una aventura de rol sea buena?",why:"Una charla teórica, no un plan para el sábado."}]},
+   {task:"El plan de práctica de guitarra de Claude es demasiado avanzado.",opts:[
+    {t:"Hazlo más fácil.",why:"Cerca, pero ¿más fácil cómo? No sabe lo que ya sabes tocar."},
+    {t:"Demasiado avanzado. Solo sé Sol, Do, Re y Mi menor. Rehazlo con esos.",ok:1,why:"Qué falla y tu nivel exacto."},
+    {t:"Abro un chat nuevo y pido un plan fácil de práctica de guitarra para principiantes totales.",why:"Pierdes la estructura que estabas siguiendo."}]}],
+  [{task:"Quieres mejorar tus aperturas de ajedrez.",opts:[
+    {t:"Pregúntame: dame una posición de la Apertura Italiana, yo digo mi jugada y tú me dices si es buena y por qué.",ok:1,why:"Claude como compañero de práctica paciente, no como buscador."},
+    {t:"¿Cuáles son las mejores aperturas de ajedrez para aprender al empezar y por qué se consideran las mejores?",why:"Útil, pero leer listas no te hará jugarlas mejor."},
+    {t:"Búscame un buen curso online de aperturas de ajedrez.",why:"Comportamiento de buscador. Practica aquí mismo."}]},
+   {task:"Estás organizando un torneo de videojuegos con amigos.",opts:[
+    {t:"¿Cómo se suele organizar un torneo de videojuegos entre amigos? ¿Qué tengo que tener en cuenta antes?",why:"Consejos. Claude puede montarlo directamente."},
+    {t:"¿Cuál es la mejor web para hacer cuadros de torneo?",why:"Una búsqueda. Claude puede hacer el cuadro."},
+    {t:"8 amigos, Mario Kart, el sábado, 4 horas. Haz el cuadro, el horario y un sistema de puntos sencillo.",ok:1,why:"Todo hecho, pensado para tu día."}]},
+   {task:"Quieres escribir un relato ambientado en tu propio mundo de fantasía.",opts:[
+    {t:"Escríbeme una historia de fantasía sobre un héroe valiente en una misión.",why:"Genérico. Lo que lo hace tuyo es tu mundo."},
+    {t:"[notas pegadas sobre mi mundo] Escena inicial de 500 palabras, contada por el posadero, con un poco de humor.",ok:1,why:"Tu mundo, más longitud, narrador y tono."},
+    {t:"¿Qué consejos hay para escribir buenos relatos de fantasía, sobre todo comienzos que enganchen?",why:"Los consejos están bien, pero querías el relato."}]}],
+  [{task:"El menú de opciones gráficas de un juego es un lío.",opts:[
+    {t:"[captura de las opciones] Mi portátil tiene una GTX 1650. ¿Qué cambio para ir a 60 fps estables?",ok:1,why:"El menú real, tu equipo y tu objetivo."},
+    {t:"[captura] Ayuda.",why:"¿Ayuda con qué? Di tu objetivo."},
+    {t:"¿Qué opciones gráficas debería usar para jugar?",why:"Depende del juego y de tu equipo."}]},
+   {task:"Has encontrado una carta coleccionable antigua y te preguntas cuánto vale.",opts:[
+    {t:"[foto de la carta] ¿Cuánto vale?",why:"Cerca, pero los precios cambian constantemente. Lo que Claude sabe de serie puede estar muy desfasado."},
+    {t:"[foto de la carta] ¿Qué carta y de qué colección es? Luego busca precios de venta recientes.",ok:1,why:"Identifica la carta y luego busca precios reales en vez de adivinar."},
+    {t:"¿Cuánto valen hoy en día las cartas coleccionables antiguas?",why:"Desde céntimos hasta miles de euros. Enséñale la tuya."}]},
+   {task:"Un patrón de ganchillo está lleno de abreviaturas.",opts:[
+    {t:"¿Cómo se leen los patrones de ganchillo?",why:"Una lección general, cuando necesitas ayuda con este patrón."},
+    {t:"[foto del patrón]",why:"Puede leerlo, pero ¿quieres una explicación, una traducción, una revisión?"},
+    {t:"[foto del patrón] Explícamelo vuelta a vuelta para principiantes. ¿Qué significa «2pbj»?",ok:1,why:"Enséñalo y di tu nivel y lo que necesitas."}]}],
+  [{task:"Claude te dice dónde está un objeto secreto de un juego que salió el mes pasado.",opts:[
+    {t:"Me fío. Ha descrito el sitio exacto con muchísimo detalle.",why:"El detalle se puede inventar. Un juego tan nuevo puede ser posterior a lo que Claude sabe de serie."},
+    {t:"Le pido que busque en internet, o miro una guía, porque el juego es muy nuevo.",ok:1,why:"Para lo reciente, búsqueda en directo o una fuente."},
+    {t:"Se lo vuelvo a preguntar y, si dice lo mismo, me fío.",why:"Puede repetir la misma respuesta inventada."}]},
+   {task:"Claude dice que tu carta rara vale unos 500 €.",opts:[
+    {t:"Miro yo mismo las ventas recientes antes de comprar o vender.",ok:1,why:"Los precios reales salen de ventas reales, hoy."},
+    {t:"La pongo a la venta por 500 € ahora mismo.",why:"Podrías venderla muy por debajo o muy por encima de su precio."},
+    {t:"Le pregunto a Claude si está seguro y la vendo si dice que sí.",why:"Estar seguro no hace que el precio sea actual."}]},
+   {task:"Claude explica una regla de un juego de mesa de forma distinta al reglamento.",opts:[
+    {t:"Me quedo con la versión de Claude. Se ha leído muchos más reglamentos que tú y que todos tus amigos juntos.",why:"Puede estar mezclando otra edición u otro juego."},
+    {t:"Manda el reglamento. Le enseño la página a Claude y le pido que me vuelva a explicar esa regla.",ok:1,why:"La fuente real gana a la memoria. Claude explica genial una página que le enseñas."},
+    {t:"Discutirlo con tus amigos hasta que alguien se rinda.",why:"Un clásico. No es lo más rápido."}]}]],
+  build:{task:"Conseguir recomendaciones de juegos que de verdad te vayan.",base:"Recomiéndame un juego.",
+   chips:[
+    {id:"a",t:"Me encantaron Stardew Valley y Animal Crossing",good:1},
+    {id:"b",t:"Juego en Nintendo Switch",good:1},
+    {id:"c",t:"Solo 30 minutos por la noche",good:1},
+    {id:"d",t:"Nada de miedo ni violencia",good:1},
+    {id:"e",t:"3 opciones, una línea cada una explicando por qué encaja",good:1},
+    {id:"x",t:"Tiene que ser el mejor juego de la historia",good:0},
+    {id:"y",t:"Mi hermano juega a shooters",good:0},
+    {id:"z",t:"Juego desde los 8 años",good:0}],
+   replies:["Entre los mejores juegos de la historia están los RPG épicos de mundo abierto, los shooters competitivos más intensos y los clásicos legendarios de terror…",
+    "Aquí tienes algunos juegos populares: una gran aventura de mundo abierto, el último juego de fútbol, un battle royale…",
+    "Como te gustan los juegos tranquilos en Switch, podría encajarte un juego de granja o de simulación de vida…",
+    "1. Un simulador acogedor de granja y amistad: los días del juego son cortos, perfecto para sesiones de 30 minutos.\n2. Un puzle tranquilo de construir islas: no se puede perder y relaja mucho.\n3. Un juego relajante de cocinar y decorar: fácil de empezar y dejar.\nTodos en Switch, sin miedo ni violencia. (Pídeme que busque los precios actuales.)"]},
+  free:["Quieres organizar una noche de juegos tranquila para 6 amigos que no suelen jugar a juegos de mesa.","Quieres empezar una afición nueva, como dibujar o tocar la guitarra, con 20 minutos al día.","Necesitas ayuda para elegir unos auriculares para jugar sin gastar mucho."]}
+ ],
+ free:["Quieres ayuda para decidir si reparar o cambiar tu lavadora vieja.","Quieres empezar a aprender un idioma nuevo con 15 minutos al día.","Tienes que escribir a un vecino por el ruido de madrugada sin empezar una guerra."]
+}
+};
 const BELT_COL=["#ffffff","#f2c230","#f08a24","#3aa35b","#2f6fd6","#8a5a34","#1b1a1f"];
 
 const $=s=>document.querySelector(s), mat=$("#mat"), say=t=>$("#say").textContent=t;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 let st={won:{},pos:{},cur:0,lang:"en",theme:"everyday"};
-try{const s=JSON.parse(localStorage.getItem("pdojo3")||"null");if(s&&Array.isArray(s.won))st=Object.assign(st,s)}catch(e){}
+let hadSave=false;try{const s=JSON.parse(localStorage.getItem("pdojo3")||"null");if(s&&s.won){st=Object.assign(st,s);hadSave=true}}catch(e){}
+if(!hadSave){try{if(/^es\b/i.test(navigator.language||""))st.lang="es"}catch(e){}}
 if(Array.isArray(st.won))st.won={everyday:st.won};if(!st.won||typeof st.won!=="object")st.won={};if(!st.pos||typeof st.pos!=="object")st.pos={};if(!LANGS[st.lang])st.lang="en";
 const save=()=>{try{localStorage.setItem("pdojo3",JSON.stringify(st))}catch(e){}};
 let L,U,BELTS;
@@ -596,6 +1051,7 @@ const open=i=>i===0||W().includes(i-1)||W().includes(i);
 const TH=()=>L.themes.find(t=>t.id===st.theme)||L.themes[0];
 const qsOf=i=>TH().qs?TH().qs[i]:BELTS[i].qs;
 const buildOf=()=>TH().build||L.build, freeOf=()=>TH().free||L.free;
+function resume(){const p=st.pos[st.theme];if(p&&BELTS[p.i]&&BELTS[p.i].type==="pick"){st.cur=p.i;rack();pick(p.i,p.q,p.right)}else{rack();start(Math.min(st.cur||0,BELTS.length-1),true)}}
 function themes(){
   $("#themes").innerHTML=`<h3>${U.themesLabel}</h3>`+L.themes.map(t=>`<button class="th" aria-pressed="${t.id===st.theme}" data-t="${t.id}"><em>${(st.won[t.id]||[]).length}/7${st.pos[t.id]&&t.id!==st.theme?" · "+U.inProgress:""}</em><b>${esc(t.name)}</b><small>${esc(t.blurb)}</small></button>`).join("");
 }
@@ -612,17 +1068,17 @@ function setLang(code){
   sel.innerHTML=keys.map(k=>`<option value="${k}" ${k===code?"selected":""}>${esc(LANGS[k].langName)}</option>`).join("");
   sel.classList.toggle("hide",keys.length<2);
 }
-$("#lang").onchange=e=>{setLang(e.target.value);start(st.cur)};
+$("#lang").onchange=e=>{setLang(e.target.value);resume();say(U.hello)};
 
 function rack(just){
   themes();
-  $("#rack").innerHTML=BELTS.map((b,i)=>`<button class="belt ${W().includes(i)?"won":""} ${open(i)?"open":""} ${i===st.cur?"cur":""} ${i===just?"just":""}" data-i="${i}" ${open(i)?"":"disabled"} aria-label="${esc(b.name)} ${U.belt}: ${esc(b.skill)}${W().includes(i)?` (${U.earned})`:open(i)?"":` (${U.locked})`}"><i style="background:${BELT_COL[i]}"></i><span>${esc(b.name)}</span></button>`).join("");
+  $("#rack").innerHTML=BELTS.map((b,i)=>`<button class="belt ${W().includes(i)?"won":""} ${open(i)?"open":""} ${i===st.cur?"cur":""} ${i===just?"just":""}" data-i="${i}" ${open(i)?"":"disabled"} aria-label="${esc(U.beltOf(b.name))}: ${esc(b.skill)}${W().includes(i)?` (${U.earned})`:open(i)?"":` (${U.locked})`}"><i style="background:${BELT_COL[i]}"></i><span>${esc(b.name)}</span></button>`).join("");
 }
 $("#rack").addEventListener("click",e=>{const b=e.target.closest(".belt");if(b&&!b.disabled)start(+b.dataset.i)});
 $("#reset").onclick=()=>{st.won[st.theme]=[];delete st.pos[st.theme];st.cur=0;save();say(U.resetDone);start(0,true)};
 
 function head(b,n,total){
-  return `<div class="meta"><span>${esc(b.name)} ${U.belt} · ${esc(b.skill)}</span>${total?`<span class="pips">${Array.from({length:total},(_,k)=>`<b class="${k<n?"d":k===n?"c":""}"></b>`).join("")}</span>`:""}</div>`;
+  return `<div class="meta"><span>${esc(U.beltOf(b.name))} · ${esc(b.skill)}</span>${total?`<span class="pips">${Array.from({length:total},(_,k)=>`<b class="${k<n?"d":k===n?"c":""}"></b>`).join("")}</span>`:""}</div>`;
 }
 function start(i,quiet){st.cur=i;save();rack();const b=BELTS[i];if(!quiet)say(b.intro);
   if(b.type==="pick")pick(i,0,0);else if(b.type==="build")build(i);else free(i);}
@@ -718,7 +1174,7 @@ Situation they were given: "${sc}"
 Their message:
 """${p}"""
 Score how likely this message is to get a genuinely useful, personal answer (0-100). Reward: real context, specifics, constraints, saying what they want back. Penalise: search-style keywords, vagueness, empty hype. Invented details are fine. Be warm, plain-spoken and encouraging; no jargon (never say "prompt").
-Write strengths, fixes and rewrite in ${L.langName}.
+Write strengths, fixes and rewrite in ${L.aiLang||L.langName}.
 Return ONLY JSON: {"score": integer 0-100, "strengths": [up to 3 short strings], "fixes": [up to 3 short, concrete strings], "rewrite": "an improved version of their message, under 100 words, keeping their details"}`,{modelTier:"quick"});real=r&&typeof r.score==="number"}catch(e){r=null}}
     if(!real)r=heuristic(p);
     btn.disabled=false;btn.textContent=U.again;
@@ -741,7 +1197,7 @@ Return ONLY JSON: {"score": integer 0-100, "strengths": [up to 3 short strings],
 }
 
 setLang(st.lang);say(U.hello);
-{const p=st.pos[st.theme];if(p&&BELTS[p.i]&&BELTS[p.i].type==="pick"){st.cur=p.i;rack();pick(p.i,p.q,p.right)}else{rack();start(Math.min(st.cur||0,BELTS.length-1),true)}}
+resume();
 }
 </script>
 </body>
