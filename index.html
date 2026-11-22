@@ -132,7 +132,7 @@ ul.fb{margin:6px 0 0;padding-left:20px}
 /* ===== All text lives here. To add a language, copy the "en" block, translate the values, and add it to LANGS. ===== */
 const LANGS={en:{
  langName:"English",
- ui:{sub:"AI is not Google",themesLabel:"Pick a theme",lede:"Most people type into AI like it's a search box. Seven quick belts show you how to talk to it instead, and get answers that actually fit your life.",
+ ui:{sub:"AI is not Google",themesLabel:"Pick a theme",saved:n=>`Your ${n} progress is saved. Come back any time.`,resumed:n=>`Welcome back to ${n}. Carrying on where you left off.`,inProgress:"in progress",lede:"Most people type into AI like it's a search box. Seven quick belts show you how to talk to it instead, and get answers that actually fit your life.",
   hello:"Welcome, student. Pick the first belt and let's begin.",note:"Progress is saved in this browser. The black-belt test sends your message to Claude, so it asks permission the first time.",
   reset:"Start over",resetDone:"Progress cleared. Ready for the next student.",belt:"belt",earned:"earned",locked:"locked",
   pickQ:"Which message gets the more useful answer?",situation:"Situation",right:"Exactly. Notice why it works.",wrong:"Not quite. Look at the green one.",
@@ -586,9 +586,9 @@ const BELT_COL=["#ffffff","#f2c230","#f08a24","#3aa35b","#2f6fd6","#8a5a34","#1b
 
 const $=s=>document.querySelector(s), mat=$("#mat"), say=t=>$("#say").textContent=t;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-let st={won:{},cur:0,lang:"en",theme:"everyday"};
+let st={won:{},pos:{},cur:0,lang:"en",theme:"everyday"};
 try{const s=JSON.parse(localStorage.getItem("pdojo3")||"null");if(s&&Array.isArray(s.won))st=Object.assign(st,s)}catch(e){}
-if(Array.isArray(st.won))st.won={everyday:st.won};if(!st.won||typeof st.won!=="object")st.won={};if(!LANGS[st.lang])st.lang="en";
+if(Array.isArray(st.won))st.won={everyday:st.won};if(!st.won||typeof st.won!=="object")st.won={};if(!st.pos||typeof st.pos!=="object")st.pos={};if(!LANGS[st.lang])st.lang="en";
 const save=()=>{try{localStorage.setItem("pdojo3",JSON.stringify(st))}catch(e){}};
 let L,U,BELTS;
 const W=()=>st.won[st.theme]||(st.won[st.theme]=[]);
@@ -597,9 +597,12 @@ const TH=()=>L.themes.find(t=>t.id===st.theme)||L.themes[0];
 const qsOf=i=>TH().qs?TH().qs[i]:BELTS[i].qs;
 const buildOf=()=>TH().build||L.build, freeOf=()=>TH().free||L.free;
 function themes(){
-  $("#themes").innerHTML=`<h3>${U.themesLabel}</h3>`+L.themes.map(t=>`<button class="th" aria-pressed="${t.id===st.theme}" data-t="${t.id}"><em>${(st.won[t.id]||[]).length}/7</em><b>${esc(t.name)}</b><small>${esc(t.blurb)}</small></button>`).join("");
+  $("#themes").innerHTML=`<h3>${U.themesLabel}</h3>`+L.themes.map(t=>`<button class="th" aria-pressed="${t.id===st.theme}" data-t="${t.id}"><em>${(st.won[t.id]||[]).length}/7${st.pos[t.id]&&t.id!==st.theme?" · "+U.inProgress:""}</em><b>${esc(t.name)}</b><small>${esc(t.blurb)}</small></button>`).join("");
 }
-$("#themes").addEventListener("click",e=>{const b=e.target.closest(".th");if(!b)return;st.theme=b.dataset.t;const w=W();st.cur=w.length?Math.min(Math.max(...w)+1,6):0;save();start(st.cur)});
+$("#themes").addEventListener("click",e=>{const b=e.target.closest(".th");if(!b||b.dataset.t===st.theme)return;
+  const from=TH().name;st.theme=b.dataset.t;const p=st.pos[st.theme],w=W();
+  if(p&&BELTS[p.i]&&BELTS[p.i].type==="pick"){st.cur=p.i;save();rack();pick(p.i,p.q,p.right);say(U.resumed(TH().name))}
+  else{st.cur=w.length?Math.min(Math.max(...w)+1,6):0;save();start(st.cur,true);say(U.saved(from))}});
 
 function setLang(code){
   st.lang=code;L=LANGS[code];U=L.ui;BELTS=L.belts;save();
@@ -616,7 +619,7 @@ function rack(just){
   $("#rack").innerHTML=BELTS.map((b,i)=>`<button class="belt ${W().includes(i)?"won":""} ${open(i)?"open":""} ${i===st.cur?"cur":""} ${i===just?"just":""}" data-i="${i}" ${open(i)?"":"disabled"} aria-label="${esc(b.name)} ${U.belt}: ${esc(b.skill)}${W().includes(i)?` (${U.earned})`:open(i)?"":` (${U.locked})`}"><i style="background:${BELT_COL[i]}"></i><span>${esc(b.name)}</span></button>`).join("");
 }
 $("#rack").addEventListener("click",e=>{const b=e.target.closest(".belt");if(b&&!b.disabled)start(+b.dataset.i)});
-$("#reset").onclick=()=>{st.won[st.theme]=[];st.cur=0;save();say(U.resetDone);start(0,true)};
+$("#reset").onclick=()=>{st.won[st.theme]=[];delete st.pos[st.theme];st.cur=0;save();say(U.resetDone);start(0,true)};
 
 function head(b,n,total){
   return `<div class="meta"><span>${esc(b.name)} ${U.belt} · ${esc(b.skill)}</span>${total?`<span class="pips">${Array.from({length:total},(_,k)=>`<b class="${k<n?"d":k===n?"c":""}"></b>`).join("")}</span>`:""}</div>`;
@@ -625,7 +628,7 @@ function start(i,quiet){st.cur=i;save();rack();const b=BELTS[i];if(!quiet)say(b.
   if(b.type==="pick")pick(i,0,0);else if(b.type==="build")build(i);else free(i);}
 
 function pick(i,q,right){
-  const b=BELTS[i],QS=qsOf(i),Q=QS[q];
+  const b=BELTS[i],QS=qsOf(i),Q=QS[q];st.pos[st.theme]={i,q,right};save();
   const order=Q.opts.map((o,k)=>k).sort(()=>Math.random()-.5);
   mat.innerHTML=head(b,q,QS.length)+`<h2>${esc(Q.ask||U.pickQ)}</h2>
    <div class="task"><strong>${U.situation}:</strong> ${esc(Q.task)}${Q.msg?`<div class="pane" style="margin-top:10px">${esc(Q.msg)}</div>`:""}</div>
@@ -639,6 +642,7 @@ function pick(i,q,right){
     $("#why").innerHTML=`<div class="why"><strong>${good?U.gotIt:U.catch}</strong> ${esc(o.why)}${good?"":`<br><br><strong>${U.better}:</strong> ${esc(best.why)}`}</div>
      <div class="row"><button class="btn" id="nx">${last?U.finish:U.next}</button></div>`;
     $("#nx").focus();
+    st.pos[st.theme]=last?null:{i,q:q+1,right};save();
     $("#nx").onclick=()=>last?finish(i,right,QS.length):pick(i,q+1,right);
   });
 }
@@ -667,6 +671,7 @@ function build(i){
 }
 
 function finish(i,right,total){
+  delete st.pos[st.theme];
   const need=Math.ceil(total*0.66),pass=right>=need,b=BELTS[i];
   if(pass&&!W().includes(i))W().push(i);
   save();rack(pass?i:undefined);
@@ -736,7 +741,7 @@ Return ONLY JSON: {"score": integer 0-100, "strengths": [up to 3 short strings],
 }
 
 setLang(st.lang);say(U.hello);
-rack();start(Math.min(st.cur||0,BELTS.length-1),true);
+{const p=st.pos[st.theme];if(p&&BELTS[p.i]&&BELTS[p.i].type==="pick"){st.cur=p.i;rack();pick(p.i,p.q,p.right)}else{rack();start(Math.min(st.cur||0,BELTS.length-1),true)}}
 }
 </script>
 </body>
