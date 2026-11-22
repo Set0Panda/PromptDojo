@@ -55,7 +55,7 @@ h2{font-weight:800;font-size:clamp(24px,3vw,32px)}
 .why{margin-top:14px;padding:14px 16px;border-radius:12px;background:var(--bg)}
 .why strong{font-family:Archivo,sans-serif}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:18px}
-.btn{font:700 16px Archivo,sans-serif;border:2px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:10px;padding:11px 20px;min-height:44px;cursor:pointer}
+.btn{display:inline-flex;align-items:center;text-decoration:none;font:700 16px Archivo,sans-serif;border:2px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:10px;padding:11px 20px;min-height:44px;cursor:pointer}
 .btn.ghost{background:transparent;color:var(--ink)}
 .btn.red{background:var(--red);border-color:var(--red);color:#fff}
 .btn:disabled{opacity:.45;cursor:not-allowed}
@@ -148,7 +148,8 @@ const LANGS={en:{
   grade:"Score my message",grading:"Scoring…",study:"Let me study this…",empty:"Write something first, student.",again:"Score again",
   blackOk:"A black belt. The dojo has nothing more to teach you, only practice.",blackNo:"Good start. Read the tips and try again.",
   byClaude:"Scored by Claude",offline:"Quick offline check (Claude scoring isn't available here)",pass:"75 to pass",works:"What works",improve:"To improve",stronger:"A stronger version",
-  run:"Send it to Claude for real",thinking:"Thinking…",limited:"Too many requests right now. Wait a minute and try again.",noReach:"Couldn't reach Claude from here.",other:"Different situation",
+  run:"Send it to Claude for real",askClaude:"Get feedback in Claude",tryClaude:"Try it in Claude",copied:"Copied. If Claude opens with an empty box, just paste.",copyFail:"Couldn't copy automatically. Select the text below and copy it.",takeIt:"Take it to your own Claude (free account works):",
+  coachMsg:(sc,p)=>`I'm practising writing better messages to AI assistants.\n\nThe situation: ${sc}\n\nMy message:\n"""\n${p}\n"""\n\nPlease (1) score my message out of 100 for how likely it is to get a genuinely useful, personal answer, (2) tell me what works, (3) give me up to 3 concrete fixes, and (4) show me an improved version. Keep it friendly and plain. Then (5) answer my original message as if I'd sent it.`,thinking:"Thinking…",limited:"Too many requests right now. Wait a minute and try again.",noReach:"Couldn't reach Claude from here.",other:"Different situation",
   h:{long:"Enough detail to work with.",short:"Add more detail. Claude is guessing a lot.",num:"Includes specifics like numbers or dates.",noNum:"Add specifics: dates, amounts, ages, budget.",
    me:"Tells Claude about your situation.",noMe:"Say who it's for and what your situation is.",fmt:"Says what you want back.",noFmt:"Say what you want back: a list, a short message, steps…",
    hype:"Cut words like \"perfect\" or \"amazing\". They add pressure, not information."},
@@ -689,6 +690,9 @@ function heuristic(p){
   if(R.hype.test(p)){s-=10;fix.push(H.hype)}
   return {score:Math.max(0,Math.min(100,s)),strengths:good,fixes:fix,rewrite:""};
 }
+const claudeUrl=t=>"https://claude.ai/new?q="+encodeURIComponent(t.slice(0,6000));
+function copyText(t){const done=()=>{$("#cp").textContent=U.copied};const fail=()=>{$("#cp").innerHTML=`${esc(U.copyFail)}<div class="pane" style="margin-top:6px;user-select:all">${esc(t)}</div>`};
+  try{navigator.clipboard.writeText(t).then(done,fail)}catch(e){fail()}}
 function free(i){
   const b=BELTS[i],FR=freeOf(),sc=FR[Math.floor(Math.random()*FR.length)];
   mat.innerHTML=head(b)+`<h2>${U.freeQ}</h2>
@@ -698,6 +702,8 @@ function free(i){
    <div class="row"><button class="btn red" id="grade">${U.grade}</button><button class="btn ghost" id="new">${U.other}</button></div>
    <div id="out" aria-live="polite"></div>`;
   $("#new").onclick=()=>free(i);
+  const DK="pdojo-draft-"+st.theme;try{$("#ta").value=localStorage.getItem(DK)||""}catch(e){}
+  $("#ta").oninput=()=>{try{localStorage.setItem(DK,$("#ta").value)}catch(e){}};
   $("#grade").onclick=async()=>{
     const p=$("#ta").value.trim();if(p.length<10){say(U.empty);return}
     const btn=$("#grade");btn.disabled=true;btn.textContent=U.grading;say(U.study);
@@ -718,7 +724,9 @@ Return ONLY JSON: {"score": integer 0-100, "strengths": [up to 3 short strings],
      ${(r.strengths||[]).length?`<strong>${U.works}</strong><ul class="fb">${r.strengths.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
      ${(r.fixes||[]).length?`<strong>${U.improve}</strong><ul class="fb">${r.fixes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
      ${r.rewrite?`<strong>${U.stronger}</strong><div class="pane" style="margin-top:6px">${esc(r.rewrite)}</div>`:""}</div>
+     <p class="small" style="margin:16px 0 0">${U.takeIt}</p><div class="row" style="margin-top:8px"><a class="btn red" id="ask" target="_blank" rel="noopener" href="${claudeUrl(U.coachMsg(sc,p))}">${U.askClaude}</a><a class="btn ghost" id="try" target="_blank" rel="noopener" href="${claudeUrl(p)}">${U.tryClaude}</a></div><div id="cp" class="small" aria-live="polite"></div>
      ${s?`<div class="row"><button class="btn" id="run">${U.run}</button></div><div id="ans"></div>`:""}`;
+    const hook=(id,text)=>{$(id).onclick=()=>{copyText(text)};};hook("#ask",U.coachMsg(sc,p));hook("#try",p);
     if($("#run"))$("#run").onclick=async()=>{
       const rb=$("#run");rb.disabled=true;$("#ans").innerHTML=`<div class="pane" id="live" style="margin-top:12px">${U.thinking}</div>`;
       try{await s(p,{modelTier:"quick",cache:false,onText:({text})=>{$("#live").textContent=text}})}
