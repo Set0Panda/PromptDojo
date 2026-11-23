@@ -13,3 +13,7 @@ All text lives in the `LANGS` object near the top of the script. Copy the `en` b
 
 ## Note on scoring
 The black-belt test uses Claude for scoring when the page runs as a Claude artifact. On GitHub Pages it falls back to a simple built-in checker.
+
+## Retrying a belt
+
+Each belt has a pool of questions (the base set plus `LANGS.<lang>.extra`). Every attempt draws a fresh set and avoids questions seen in the last attempt; once a pool is used up it starts recycling the oldest. When adding a language, add the same `extra` pool in the same order so progress carries across language switches.

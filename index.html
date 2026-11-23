@@ -89,11 +89,11 @@ ul.fb{margin:6px 0 0;padding-left:20px}
 .th em{font-style:normal;font-size:13px;color:var(--mute);float:right}
 .th[aria-pressed=true]{border-color:var(--red);box-shadow:inset 5px 0 0 var(--red)}
 .th:focus-visible{outline:3px solid var(--red);outline-offset:2px}
-@media(max-width:820px){.stage{grid-template-columns:minmax(0,1fr)}.themes{display:grid;grid-template-columns:1fr 1fr;position:static}.themes h3{display:none}.themes .th:last-child:nth-child(even){grid-column:1/-1}}
+@media(max-width:820px){.stage{grid-template-columns:minmax(0,1fr)}.themes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;position:static}.themes h3{display:none}.th{display:flex;flex-direction:column;align-items:center;text-align:center;padding:8px 2px 6px;min-height:0}.th small{display:none}.th b{display:flex;flex-direction:column;align-items:center;font-size:13px;line-height:1.15;max-width:100%}.th b svg{display:block;margin:0 0 4px;width:22px;height:22px}.th em{float:none;order:3;font-size:11px;margin-top:2px}.th .ip{display:none}.th[aria-pressed=true]{box-shadow:inset 0 -4px 0 var(--red)}}
 .intro{margin:0 0 6px;color:var(--mute);font-size:15px}
 .th b svg{width:20px;height:20px;vertical-align:-4px;margin-right:8px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;color:var(--red)}
 .saym{display:none}
-@media(max-width:600px){.wall{padding:14px 16px 12px;border-bottom-width:4px}.top{gap:0}h1{font-size:28px}.sub{font-size:15px;margin-top:2px}.lede,.sensei,.intro{display:none}.rack{gap:4px;margin-top:10px}.belt{flex:1 1 0;min-width:0}.belt span{display:none}.belt i{height:14px}.belt i::after{display:none}main.band{padding:12px 12px 24px}.matcard{padding:14px;border-radius:14px}h2{font-size:20px}.task{padding:8px 12px;margin:10px 0}.opts{gap:8px;margin-top:10px}.opt{padding:12px 14px}.th{padding:8px 10px;display:flex;align-items:center;gap:6px;min-width:0}.th b{flex:1;min-width:0;font-size:14px;line-height:1.15}.th b svg{width:18px;height:18px;margin-right:6px}.th em{float:none;order:2;white-space:nowrap;font-size:12px}.th{min-height:40px}.themes{gap:6px}.th .ip{display:none}.th small{display:none}.saym{display:block;margin:0 0 8px;font-size:14px;color:var(--mute);min-height:1.4em}.meta{margin-bottom:4px}}
+@media(max-width:600px){.wall{padding:14px 16px 12px;border-bottom-width:4px}.top{gap:0}h1{font-size:28px}.sub{font-size:15px;margin-top:2px}.lede,.sensei,.intro{display:none}.rack{gap:4px;margin-top:10px}.belt{flex:1 1 0;min-width:0}.belt span{display:none}.belt i{height:14px}.belt i::after{display:none}main.band{padding:12px 12px 24px}.matcard{padding:14px;border-radius:14px}h2{font-size:20px}.task{padding:8px 12px;margin:10px 0}.opts{gap:8px;margin-top:10px}.opt{padding:12px 14px}.th b{font-size:12.5px}.th b svg{width:20px;height:20px;margin:0 0 3px}.themes{gap:5px}.saym{display:block;margin:0 0 8px;font-size:14px;color:var(--mute);min-height:1.4em}.meta{margin-bottom:4px}}
 .foot{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:14px}
 .foot .btn{padding:6px 14px;min-height:40px;font-size:14px}
 </style>
@@ -147,7 +147,7 @@ const LANGS={en:{
   fluff:"Drop the extras: hype words add pressure, not information, and details that don't change the plan just add noise. Ask yourself: would this change what Claude suggests?",missing:"Still missing:",
   buildOk:"Every piece earns its place. Well done.",buildNo:"Each piece should tell Claude something it couldn't guess.",
   won:n=>`${n} belt earned`,notYet:"Not this time",unlocked:s=>`Habit unlocked: ${s}.`,need:(n,t)=>`You need ${n} of ${t}. The explanations are the real lesson. Have another go.`,
-  goNext:n=>`Next: ${n} belt`,retry:"Retry",bow:"Bow to your new belt.",fail:"Every master failed more times than the student has tried.",
+  goNext:n=>`Next: ${n} belt`,retry:"Retry",retryNew:"Try again with new questions",bow:"Bow to your new belt.",fail:"Every master failed more times than the student has tried.",
   freeQ:"Write it yourself",freeLabel:"Your message to Claude (make up any details you need)",freePh:"Write it like you'd explain it to a helpful friend…",
   grade:"Score my message",grading:"Scoring…",study:"Let me study this…",empty:"Write something first, student.",again:"Score again",
   blackOk:"A black belt. The dojo has nothing more to teach you, only practice.",blackNo:"Good start. Read the tips and try again.",
@@ -268,7 +268,7 @@ const LANGS={en:{
    "A dinosaur party for 12 at home: start with a «fossil dig» in a sand tray, then a dino-egg hunt…",
    "Dino party, 12 kids, flat, €80, nut-free:\n17:00 Dino masks to colour (€8)\n17:30 Fossil dig (€10)\n18:15 Egg hunt\n18:45 Homemade nut-free cake (€12)\nShopping: masks, sand, plastic dinos (€15)… ≈ €74."]},
  themes:[
- {id:"everyday",name:"Home & family",blurb:"Meals, letters, shopping, kids",icon:"home"},
+ {id:"everyday",name:"Home",blurb:"Meals, letters, shopping, kids",icon:"home"},
  {id:"work",name:"Work",blurb:"Emails, meetings, interviews",icon:"work",
   qs:[
   [{task:"A client is unhappy their project is late.",opts:[
@@ -347,7 +347,7 @@ const LANGS={en:{
     "Hi team, from 1 Feb we're moving from paper diaries to online booking. I know change can feel like a lot…",
     "Hi team,\nFrom 1 Feb we're moving to online booking. New tech can feel daunting, so there's a 30-minute training on 25 Jan, and I'll be there to help. Please put it in your diary (the paper one, one last time!).\nAna"]},
   free:["Politely turn down a meeting you don't have time for.","Prepare a 5-minute update for your team meeting.","Ask a colleague to stop interrupting you in meetings."]},
- {id:"health",name:"Health & wellbeing",blurb:"Exercise, food, sleep, doctors",icon:"health",
+ {id:"health",name:"Health",blurb:"Exercise, food, sleep, doctors",icon:"health",
   qs:[
   [{task:"You want to start exercising.",opts:[
     {t:"An effective, sustainable, motivating plan to get me in shape.",why:"Adjectives. No age, level, injuries or time."},
@@ -425,7 +425,7 @@ const LANGS={en:{
     "A gentle 3-day home plan: 5 minutes of mobility, then bodyweight squats, glute bridges…",
     "Week 1 (20 min, mat, back-friendly):\nMon/Wed/Fri: warm-up 4 min · glute bridges 3×10 · bird-dog 3×8 · wall push-ups 3×10 · stretch\nWeeks 2–4: a few more reps each week. Skip anything that hurts your back."]},
   free:["Build a habit of drinking more water and walking more.","Prepare questions for a physio appointment about a sore shoulder.","Healthier lunches you can take to work."]},
- {id:"money",name:"Money & paperwork",blurb:"Bills, budgets, forms",icon:"money",
+ {id:"money",name:"Money",blurb:"Bills, budgets, forms",icon:"money",
   qs:[
   [{task:"You're comparing two electricity offers.",opts:[
     {t:"Help me find a cheaper, greener, flexible provider with great customer service.",why:"Adjectives. It hasn't seen the offers."},
@@ -503,7 +503,7 @@ const LANGS={en:{
     "With €1,900 take-home and €900 on rent and bills, you have €1,000 left. First, the €200 for your trip…",
     "Rent | €750\nBills | €150\nTrip savings | €200 (first, on payday)\nFood | €280\nEating out | €120 (separate card)\nTransport | €80\nOther | €320\nTotal | €1,900"]},
   free:["Decide whether to pay off a small loan early or keep the savings.","Ask a company for a refund on a faulty product.","Organise your important documents and deadlines for the year."]},
- {id:"hobbies",name:"Free time & hobbies",blurb:"Garden, cooking, music, games",icon:"leaf",
+ {id:"hobbies",name:"Hobbies",blurb:"Garden, cooking, music, games",icon:"leaf",
   qs:[
   [{task:"Your tomato plants aren't doing well.",opts:[
     {t:"Give me expert tips for a beautiful, healthy and productive vegetable garden.",why:"Adjectives. What's actually wrong with yours?"},
@@ -600,7 +600,7 @@ es:{
   fluff:"Quita lo que sobra: las palabras exageradas meten presión pero no información, y los detalles que no cambian el plan solo hacen ruido. Pregúntate: ¿esto cambiaría lo que me sugiere Claude?",missing:"Aún falta:",
   buildOk:"Cada pieza aporta algo. Bien hecho.",buildNo:"Cada pieza debe contarle a Claude algo que no pueda adivinar.",
   won:n=>`Cinturón ${n.toLowerCase()} conseguido`,notYet:"Esta vez no",unlocked:s=>`Hábito desbloqueado: ${s}.`,need:(n,t)=>`Necesitas ${n} de ${t}. Las explicaciones son la lección de verdad. Inténtalo otra vez.`,
-  goNext:n=>`Siguiente: cinturón ${n.toLowerCase()}`,retry:"Repetir",bow:"Haz una reverencia a tu nuevo cinturón.",fail:"Todo maestro ha fallado más veces de las que el alumno lo ha intentado.",
+  goNext:n=>`Siguiente: cinturón ${n.toLowerCase()}`,retry:"Repetir",retryNew:"Otra vez, con preguntas nuevas",bow:"Haz una reverencia a tu nuevo cinturón.",fail:"Todo maestro ha fallado más veces de las que el alumno lo ha intentado.",
   freeQ:"Escríbelo tú",freeLabel:"Tu mensaje para Claude (invéntate los detalles que necesites)",freePh:"Escríbelo como se lo explicarías a un amigo que te quiere ayudar…",
   grade:"Puntuar mi mensaje",grading:"Puntuando…",study:"Déjame estudiarlo…",empty:"Primero escribe algo, alumno.",again:"Puntuar otra vez",
   blackOk:"Cinturón negro. El dojo ya no tiene nada que enseñarte, solo queda practicar.",blackNo:"Buen comienzo. Lee los consejos y vuelve a intentarlo.",
@@ -722,7 +722,7 @@ es:{
    "Una fiesta de dinosaurios para 12 en casa: empieza con una «excavación de fósiles» en una bandeja de arena…",
    "Fiesta dino, 12 niños, piso, 80 €, sin frutos secos:\n17:00 Máscaras de dino para colorear (8 €)\n17:30 Excavación de fósiles (10 €)\n18:15 Búsqueda de huevos\n18:45 Tarta casera sin frutos secos (12 €)\nCompra: máscaras, arena, dinos de plástico (15 €)… ≈ 74 €."]},
  themes:[
- {id:"everyday",name:"Casa y familia",blurb:"Comidas, cartas, compras, hijos",icon:"home"},
+ {id:"everyday",name:"Casa",blurb:"Comidas, cartas, compras, hijos",icon:"home"},
  {id:"work",name:"Trabajo",blurb:"Correos, reuniones, entrevistas",icon:"work",
   qs:[
   [{task:"Un cliente está molesto porque su proyecto va con retraso.",opts:[
@@ -801,7 +801,7 @@ es:{
     "Hola, equipo: el 1 de febrero pasamos de la agenda en papel a las citas online. Sé que los cambios agobian…",
     "Hola, equipo:\nEl 1 de febrero pasamos a las citas online. La tecnología nueva puede imponer, así que el 25 de enero hay una formación de 30 minutos y estaré para ayudar. Apuntadlo en la agenda (la de papel, por última vez).\nAna"]},
   free:["Rechaza con educación una reunión para la que no tienes tiempo.","Prepara una actualización de 5 minutos para la reunión de equipo.","Pide a un compañero que deje de interrumpirte en las reuniones."]},
- {id:"health",name:"Salud y bienestar",blurb:"Ejercicio, comida, sueño, médicos",icon:"health",
+ {id:"health",name:"Salud",blurb:"Ejercicio, comida, sueño, médicos",icon:"health",
   qs:[
   [{task:"Quieres empezar a hacer ejercicio.",opts:[
     {t:"Un plan eficaz, sostenible y motivador para ponerme en forma.",why:"Adjetivos. Ni edad, ni nivel, ni lesiones, ni tiempo."},
@@ -879,7 +879,7 @@ es:{
     "Un plan suave de 3 días en casa: 5 minutos de movilidad, luego sentadillas, puente de glúteo…",
     "Semana 1 (20 min, esterilla, cuidando la espalda):\nLun/Mié/Vie: calentamiento 4 min · puente de glúteo 3×10 · bird-dog 3×8 · flexiones en pared 3×10 · estiramientos\nSemanas 2–4: unas repeticiones más cada semana. Si algo molesta en la espalda, sáltalo."]},
   free:["Crea el hábito de beber más agua y caminar más.","Prepara preguntas para el fisio por un dolor de hombro.","Comidas más sanas para llevar al trabajo."]},
- {id:"money",name:"Dinero y papeleo",blurb:"Facturas, presupuestos, trámites",icon:"money",
+ {id:"money",name:"Dinero",blurb:"Facturas, presupuestos, trámites",icon:"money",
   qs:[
   [{task:"Comparas dos ofertas de luz.",opts:[
     {t:"Ayúdame a encontrar una compañía más barata, verde y flexible, con buena atención al cliente.",why:"Adjetivos. No ha visto las ofertas."},
@@ -957,7 +957,7 @@ es:{
     "Con 1.900 € netos y 900 € entre alquiler y facturas, te quedan 1.000 €. Primero, los 200 € del viaje…",
     "Alquiler | 750 €\nFacturas | 150 €\nAhorro viaje | 200 € (lo primero, al cobrar)\nCompra | 280 €\nComer fuera | 120 € (otra tarjeta)\nTransporte | 80 €\nOtros | 320 €\nTotal | 1.900 €"]},
   free:["Decide si amortizar antes un préstamo pequeño o guardar el dinero.","Pide a una empresa que te devuelva el dinero de un producto defectuoso.","Organiza tus documentos importantes y fechas límite del año."]},
- {id:"hobbies",name:"Tiempo libre y aficiones",blurb:"Huerto, cocina, música, juegos",icon:"leaf",
+ {id:"hobbies",name:"Ocio",blurb:"Huerto, cocina, música, juegos",icon:"leaf",
   qs:[
   [{task:"Tus tomateras no van bien.",opts:[
     {t:"Dame consejos de experto para un huerto bonito, sano y productivo.",why:"Adjetivos. ¿Qué le pasa al tuyo?"},
@@ -1040,29 +1040,738 @@ es:{
 
 }
 };
+/* Extra question pools: each belt draws a fresh set per attempt from base questions + these */
+LANGS.en.extra=// EXTRA question pool (EN). Index = belt (0 White, 2 Orange, 3 Green, 4 Blue, 5 Brown). 1 = builder (null).
+// Q(task, [text, why, 1?]...)  A(msg, task?, [text, why, 1?]...)
+(function(){
+const mk=o=>o.map(x=>x[2]?{t:x[0],ok:1,why:x[1]}:{t:x[0],why:x[1]});
+const Q=(task,...o)=>({task,opts:mk(o)});
+const ASK="What's the most useful thing to add?",YAB="You're about to send this.";
+const A=(msg,...o)=>({ask:ASK,msg,task:YAB,opts:mk(o)});
+return {
+everyday:[
+ [ Q("Your washing machine started leaking.",
+     ["Washing machine leaking. What's wrong with it?","Which machine? Where's the water coming from? Claude must guess."],
+     ["Bosch, 6 years old, leaks at the door after a wash. Fix or replace?","Brand, age, symptom and the real decision.",1],
+     ["What are the most common causes of washing machine leaks?","A general list. Yours is one specific machine."]),
+   Q("You're choosing a gift for your sister's 50th.",
+     ["Gift ideas for a 50th birthday?","The same list everyone gets. Nothing about her."],
+     ["Sister turning 50, loves gardening and cooking, budget €60. 5 ideas?","Who she is, what she likes, what you can spend.",1],
+     ["Something really special and meaningful for my wonderful sister, who deserves the world.","All feeling, no facts."]),
+   Q("Your teenager only says «fine» at dinner.",
+     ["How do I get my teenager to talk to me?","Generic. Claude doesn't know the age or what you've tried."],
+     ["Son, 15, answers «fine». School questions failed. Ideas for dinner talk?","The age, the pattern and what already failed.",1],
+     ["Teenagers are impossible. Please help.","A sigh, not a question."]),
+   A("Plan a week of lunches for me.",
+     ["\"Please make it really good.\"","Claude will try anyway. It's not information."],
+     ["\"No microwave at work, no pork, about €5 a day.\"","The limits that decide every meal.",1],
+     ["\"I enjoy cooking at weekends.\"","Nice to know, but it doesn't shape weekday lunches."]) ],
+ null,
+ [ Q("Claude's holiday plan is good, but day 3 is too busy.",
+     ["Day 3 is packed. Move the museum to day 2, keep the rest.","Says what's wrong and what to keep.",1],
+     ["Make a completely different holiday plan, maybe with fewer places and more rest.","You'd lose the days you liked."],
+     ["This isn't right.","It doesn't know which part, or why."]),
+   Q("Claude's email to your bank is too stiff.",
+     ["Start a new chat and ask for a friendlier email to the bank, with the details again.","It forgets the details you already gave."],
+     ["Warmer, shorter, still polite. Keep the account details.","What to change, and what to leave alone.",1],
+     ["Too formal.","Close, but how much less? What stays?"]),
+   Q("Claude gave three gift ideas. You like the second.",
+     ["Give me three more ideas.","You found one you like. Build on it."],
+     ["Where can I buy the second one, and roughly what does it cost?","Builds on the idea you picked.",1],
+     ["Search the web for where to buy gifts like that.","Claude already has the idea. Just ask it."]),
+   Q("Claude's answer is too long to read on your phone.",
+     ["Can you send it as a PDF?","Same length in a different wrapper."],
+     ["Too long. Give me the 3 main points, two lines each.","Says what's wrong and the shape you want.",1],
+     ["Never mind, I'll skim it.","You can just ask for the short version."]) ],
+ [ Q("You need to complain about a faulty toaster.",
+     ["How do I complain about a faulty product, and who do I even send the complaint to?","Advice, and you still write the letter."],
+     ["Write my complaint: toaster bought 12 Oct, broke in 3 weeks. I want a refund.","Claude writes the real thing. You check it.",1],
+     ["What are my consumer rights in Spain?","Good to know, but nothing gets sent."]),
+   Q("You must give a speech for your mother's 70th.",
+     ["Give me some tips for writing a good speech for a big family birthday party.","Tips, and the page is still blank."],
+     ["Ask me 5 questions about her, then draft a 2-minute speech.","Claude draws out the stories, then writes.",1],
+     ["Write a generic speech for someone's 70th birthday.","Nothing in it about her."]),
+   Q("You want to learn to cook, starting from nothing.",
+     ["Which cookbook is best for beginners?","A search habit. Claude can teach you directly."],
+     ["Teach me 3 simple dinners, one step at a time. Wait for me.","A patient lesson at your own pace.",1],
+     ["Teach me to cook.","Too wide. Where does it even start?"]),
+   Q("The family argues about who does what at home.",
+     ["How do I get my kids to help around the house?","Advice. The rota is still unwritten."],
+     ["Weekly chore rota: two adults, kids 10 and 13. Fair, one page.","Claude produces the finished rota.",1],
+     ["Do chore charts for families really work?","An opinion, not a rota."]) ],
+ [ Q("A leaflet from the council, written in dense officialese.",
+     ["What do councils usually send out?","It hasn't seen your leaflet."],
+     ["[photo of leaflet] Do I have to do anything? Plain words please.","Show it, and ask for what matters.",1],
+     ["[photo of leaflet]","It will describe it. It won't say what matters."]),
+   Q("Your Wi-Fi router is blinking red.",
+     ["My internet doesn't work and I've tried everything. Please help me fix it!","It can't see the router. Show it."],
+     ["[photo of router] Second light is red. What should I try first?","The photo plus a clear question.",1],
+     ["Why do routers blink red?","A list of causes. Yours is one of them."]),
+   Q("A stain on a favourite shirt.",
+     ["How do I remove stains from clothes?","Stains need different treatments. Too general."],
+     ["[photo] Red wine, 2 days ago, cotton. How do I get it out?","The photo can't show cause or fabric. You added both.",1],
+     ["[photo] Stain on a shirt.","It sees a stain, not what caused it."]),
+   Q("A recipe in a book that serves four. You're cooking for two.",
+     ["How do I halve a recipe?","A rule, not a result."],
+     ["[photo of recipe] Halve this for 2 and give me a shopping list.","It reads the recipe and does the sums.",1],
+     ["Convert a recipe from 4 portions to 2, adjusting the cooking times too.","There's no recipe in the message."]) ],
+ [ Q("Claude gives you a phone number for your local council.",
+     ["Call it. Claude wouldn't make up a number.","Numbers are exactly the kind of detail it can invent."],
+     ["Look the number up on the council's own website.","Take contact details from the real source.",1],
+     ["Ask Claude to read the number back to confirm it.","It will read back the same mistake."]),
+   Q("Claude quotes an exact statistic about your town.",
+     ["Use it in your presentation. It sounds precise.","Exact-sounding numbers can be invented."],
+     ["Ask where it comes from, then check the source yourself.","Make it show a source, then look.",1],
+     ["Ask again. If it repeats the number, it's true.","It can repeat a mistake just as confidently."]),
+   Q("You need help with a form that asks for your ID number.",
+     ["Paste everything in. Claude needs it all.","Claude can help without your real numbers."],
+     ["Use fake numbers for the practice. Fill the real ones in yourself.","Get the help, keep the private details.",1],
+     ["Never use AI for forms.","It explains forms well. Just keep private details out."]),
+   Q("Claude recommends a restaurant in your city.",
+     ["Book it today. Claude knows the area and its restaurants very well.","It can name places that closed or never existed."],
+     ["Check it exists and is open before booking.","A quick look at a map or its own site.",1],
+     ["Ask Claude to confirm it's open today.","It can't know unless it searches."]) ]
+],
+
+work:[
+ [ Q("You must politely decline a meeting.",
+     ["Decline a meeting politely.","Which meeting? What's your reason?"],
+     ["Decline Tuesday's budget meeting (on leave). Offer Wednesday. Two lines.","Which meeting, why, the alternative, the length.",1],
+     ["Write a very professional, polite and friendly decline for a meeting I can't attend.","A tone, no facts."]),
+   Q("A conference wants a short bio from you.",
+     ["Write me a professional, engaging and memorable bio for an important conference talk.","Claude knows nothing about you yet."],
+     ["Bio, 60 words: operations lead, 12 years in logistics, Valencia. Friendly.","The facts and the shape you need.",1],
+     ["What makes a good conference bio?","Tips, but no bio."]),
+   A("Write a short update for my team about the delay.",
+     ["\"Keep it positive.\"","Claude would anyway. It tells the team nothing."],
+     ["\"New date is 12 Dec. Nothing for them to do.\"","What changed and what they need to do.",1],
+     ["\"There are 8 people on the team.\"","Not what the message needs."]) ],
+ null,
+ [ Q("Claude's meeting summary leaves out the decisions.",
+     ["Add a «Decisions» section and name who owns each.","Says what's missing and how to fix it.",1],
+     ["Summarise it again.","You'd probably get the same summary."],
+     ["That's not what I wanted.","It doesn't know what was missing."]),
+   Q("Claude's reply to a supplier needs to sound firmer.",
+     ["Write a completely new reply, but make it angrier and more direct.","Angrier isn't firmer, and the draft is lost."],
+     ["Firmer, still polite. Keep the delivery deadline.","Changes the tone, keeps what works.",1],
+     ["Make it better.","Better how?"]),
+   Q("Claude's job ad is good. You also need it for LinkedIn.",
+     ["Write a LinkedIn job ad for the same job, with the usual hashtags.","A fresh start that ignores the ad you liked."],
+     ["Shorten that ad to 600 characters for LinkedIn.","Builds on the ad you approved.",1],
+     ["Copy it over and trim it yourself.","Claude trims in seconds."]) ],
+ [ Q("A hard conversation with a team member tomorrow.",
+     ["How do I give difficult feedback?","Advice, not practice."],
+     ["Play my employee. I'll practise, then tell me what to say better.","A safe rehearsal with feedback.",1],
+     ["Write the exact script for me to read out word by word tomorrow morning.","A read-out script sounds cold."]),
+   Q("You must compare two software quotes.",
+     ["What should I look for in software quotes?","A checklist, and you still compare them."],
+     ["[pasted quotes] Put these in a table and flag what's different.","Claude does the comparison.",1],
+     ["Which software company is best?","It doesn't know your needs or the quotes."]),
+   Q("You have to present to the board next week.",
+     ["How do I give a really good presentation to a board of directors?","General advice."],
+     ["Be a sceptical board member. I'll present; ask hard questions.","A tough rehearsal.",1],
+     ["Write the whole presentation for me to read out.","Reading out sounds stiff."]) ],
+ [ Q("A client sends a scanned contract.",
+     ["What should I look for in a contract like this before I put my name on it?","A checklist, not this contract."],
+     ["[PDF] What am I agreeing to, and what are the deadlines?","The document plus the questions that matter.",1],
+     ["[PDF] Summarise.","Vague. Summarise for what?"]),
+   Q("A competitor's price list arrives as a PDF.",
+     ["How do I analyse a competitor's prices without making silly mistakes?","A method, not your comparison."],
+     ["[PDF] Compare with my prices [pasted]. Where are they cheaper?","Both lists and a clear question.",1],
+     ["[PDF] Is this cheaper than us?","It doesn't know your prices."]),
+   Q("A photo of a whiteboard from a long meeting.",
+     ["How do I take better meeting notes so I don't need to photograph the board?","Not about your whiteboard."],
+     ["[photo] Type this up as notes with actions and owners.","Reads it and organises it.",1],
+     ["[photo] What does this say?","It reads it, but doesn't organise anything."]) ],
+ [ Q("Claude drafts a legal clause for your contract.",
+     ["Use it. It's standard wording.","Legal wording depends on the country and the case."],
+     ["Have a lawyer read it before you sign.","A person who is responsible for being right.",1],
+     ["Ask Claude if it's legal. If yes, sign.","It can sound sure and still be wrong."]),
+   Q("Claude writes an email in a language you don't speak.",
+     ["Send it. Claude is very good at languages.","Good, but a small slip can change the meaning."],
+     ["Have a native speaker read it before you send it.","Someone fluent catches the odd slip.",1],
+     ["Translate it back with Claude to confirm.","The same tool may repeat the same mistake."]),
+   Q("You want Claude to analyse a file of customer data.",
+     ["It's only names and emails, nothing sensitive. Paste it all in.","Customer data may be protected by privacy rules."],
+     ["Remove names and details first, or check company policy.","Share only what the task needs.",1],
+     ["Tell Claude the data is confidential.","Saying so doesn't change where the data goes."]) ]
+],
+
+health:[
+ [ Q("You want to cut down on sugar.",
+     ["How can I cut down on sugar?","The generic answer to a general question."],
+     ["Three sweet coffees a day and a biscuit at 4 pm. Help me cut down gradually.","Your real habits and a gentle goal.",1],
+     ["Give me the best sugar-free tips that really work.","The same list everyone gets."]),
+   A("Give me a 20-minute morning stretch.",
+     ["\"Make it effective.\"","Claude will try anyway. It's not information."],
+     ["\"Stiff lower back from desk work. No equipment.\"","The problem and the limits.",1],
+     ["\"I'm quite fit.\"","Fine to know, but not the key detail."]),
+   Q("You want meals to help lower your cholesterol.",
+     ["Best foods for cholesterol.","A list of foods, not meals for you."],
+     ["Cholesterol is high. I like fish, hate lentils. A week of dinners?","What you need, like and dislike.",1],
+     ["What healthy meals should I eat to lower my cholesterol as quickly as possible?","General, and no one at the table."]) ],
+ null,
+ [ Q("Claude's walking plan is too hard.",
+     ["I can't do this.","Claude can't tell what's too hard."],
+     ["Start easier: 10 minutes, 3 days a week. Same idea.","Says how much, and keeps the plan.",1],
+     ["Give me a completely different plan that doesn't involve so much walking.","You'd lose the plan you started on."]),
+   Q("Claude's meal plan includes fish, which you hate.",
+     ["Start over with a brand new plan that doesn't contain any fish at all.","You'd lose everything else you liked."],
+     ["Swap the fish dinners for chicken or eggs. Keep the rest.","One change, the rest stays.",1],
+     ["I don't like it.","It doesn't know what to change."]),
+   Q("You like Claude's stretch routine but want it shorter.",
+     ["Which stretching app is best for the office?","Back to searching."],
+     ["Cut it to 5 minutes I can do at my desk.","Keeps the routine, changes the length.",1],
+     ["Make a new routine for the office.","You'd lose the one you liked."]) ],
+ [ Q("You'd like to build some strength at home.",
+     ["Is strength training still worth starting after 50, or is it too late to bother?","Good to know, but you still have no plan."],
+     ["Make me a 4-week home strength plan. I'm 50, no equipment, 20 minutes.","A plan built around you.",1],
+     ["How do people usually start doing strength exercises?","General, and you still need the plan."]),
+   Q("You want to cook with less salt.",
+     ["What's a low-salt diet?","Information, and no dinners."],
+     ["Plan 5 low-salt dinners for two, under 40 minutes, with a shopping list.","The plan and the list.",1],
+     ["Which recipe sites are good for healthy food?","A search question."]),
+   Q("You'd like to try meditating but don't know how.",
+     ["Is meditation good for you?","A fair question. You still haven't tried it."],
+     ["Guide me through a 5-minute breathing exercise. I'm a total beginner.","Claude can lead you through it right now.",1],
+     ["Which meditation app is the best one for beginners?","Back to searching."]) ],
+ [ Q("A hospital letter has a date but few details.",
+     ["What should I usually bring to a hospital appointment, and how early should I arrive?","General. Your letter says what's specific to you."],
+     ["[photo of letter] When is my appointment, and what do I need to bring?","The letter plus the two things you need.",1],
+     ["[photo of letter] Summarise this.","A summary may skip the one date you need."]),
+   Q("A step-counter graph on your phone you can't interpret.",
+     ["What is a good number of steps per day?","A general figure, not your week."],
+     ["[screenshot] What does my week show? One small change I could make?","Your data and a useful ask.",1],
+     ["[screenshot] Am I healthy?","A step graph can't say that."]),
+   Q("A food label you can't make sense of.",
+     ["What is a healthy diet?","Too wide to help with this label."],
+     ["[photo of label] How much sugar per serving? Total for 2 servings?","The label, plus the sum you need.",1],
+     ["[photo of label]","It reads the label but not what you want."]) ],
+ [ Q("A friend sends you an AI-written «miracle cure».",
+     ["Try it for a couple of weeks. It might help, and plenty of people swear by it.","Health claims need real evidence."],
+     ["Check with a doctor or pharmacist, and look for the original source.","Evidence first.",1],
+     ["Ask Claude if it works.","It can sound sure either way."]),
+   Q("Claude says you could stop your medication.",
+     ["Stop it if Claude says it's safe.","It can't see your health or history."],
+     ["Never change medication without asking your doctor.","Some medicines are risky to stop.",1],
+     ["Cut it down slowly over a few weeks to be on the safe side.","Still risky. Doctor first."]),
+   Q("Claude says an odd rash is «probably nothing».",
+     ["Agree. Claude has seen plenty of rashes.","It can't see or examine your skin."],
+     ["If it spreads, hurts or comes with fever, see a doctor.","Some signs mean a real check-up.",1],
+     ["Ask Claude to think about it again and then make your final decision.","Another opinion from the same source."]) ]
+],
+
+money:[
+ [ Q("You're comparing two internet providers.",
+     ["Which internet provider is the better one for my family in my area right now?","Better for whom?"],
+     ["Fibre 600 Mb at €35 or 300 Mb at €28? 3 people, mostly streaming.","The real options and how you'll use it.",1],
+     ["Cheapest, fastest, no contract. Which?","Contradictory. Claude has to choose."]),
+   Q("You're wondering how much car you can afford.",
+     ["How much should a person on an average salary spend on a car these days?","A rule of thumb, not your answer."],
+     ["Net €2,100, rent €700, no debts. How much car, including running costs?","Your numbers and the full cost.",1],
+     ["What's the best car for the money?","Best for whom?"]),
+   A("Explain how a mortgage works.",
+     ["\"Keep it simple.\"","Claude would aim for that anyway."],
+     ["\"First-time buyer, €180,000 flat, 20 years. Use these numbers.\"","Your own numbers to work with.",1],
+     ["\"I've never had one.\"","Useful, but numbers matter more."]) ],
+ null,
+ [ Q("Claude's household budget is too tight.",
+     ["Leave €100 for leisure and €50 for the dog. Rework the rest.","Says what to protect, so it can rebalance.",1],
+     ["Make me a completely new budget, but one that's a bit more realistic.","You'd lose the figures it worked out."],
+     ["This won't work.","It doesn't know why."]),
+   Q("Claude's explanation of tax brackets is confusing.",
+     ["Explain tax brackets again.","The same explanation, probably."],
+     ["Use my own example: €30,000 a year. Show each step.","Your numbers make it concrete.",1],
+     ["Send me a link to the tax rules.","Claude can explain it better right here."]),
+   Q("Claude's letter to your landlord is too angry.",
+     ["Rewrite the letter, and this time make it a bit nicer.","You'd lose the parts that were right."],
+     ["Calmer. I just want the deposit back. Keep the dates.","Says what to change and what to keep.",1],
+     ["Never mind. I'll send it as it is.","Claude can soften it in seconds."]) ],
+ [ Q("You want to ask your bank for a lower mortgage rate.",
+     ["How do I ask the bank for a better mortgage rate?","Advice, and you still write the request."],
+     ["Write my request: 3 years in, rate 4.1%, never missed a payment. Polite, firm.","Claude drafts the real request.",1],
+     ["What are mortgage rates doing at the moment?","It may be out of date."]),
+   Q("You want to keep track of monthly spending.",
+     ["Which budgeting app is best?","A search question. Claude can set it up."],
+     ["Set up a monthly budget table for me: income, rent, food, bills, fun. Ask for my numbers.","Claude builds it and asks for the facts.",1],
+     ["How do I make a budget?","A lesson, and the table is still empty."]),
+   Q("You can't decide whether to buy or rent.",
+     ["Is buying always better than renting, in the long run, if you look at the numbers?","It depends. On what? Claude can ask."],
+     ["Ask me questions about my situation, then compare both with numbers.","Let Claude interview you, then compare.",1],
+     ["House prices in my city.","It can't give up-to-date prices."]) ],
+ [ Q("An insurance policy with a lot of small print.",
+     ["What should an insurance policy normally cover, and what do people often miss?","General. Not your policy."],
+     ["[photo of policy] What's covered, what isn't, and what's the excess?","Your document and the three things that matter.",1],
+     ["[photo of policy] Is this a good policy?","Good compared to what?"]),
+   Q("A bank statement with a charge you don't recognise.",
+     ["What are the most common bank fees that people don't notice, and can I avoid them?","A list, not your charge."],
+     ["[photo, account no. covered] Which charges look odd? What is this one?","Shows it, keeps the private number hidden.",1],
+     ["[photo of statement, nothing covered]","Cover your account number first."]),
+   Q("A tax form with boxes you don't understand.",
+     ["How do tax forms work in general, and what happens if I fill one in wrong?","A general answer. You have a specific form."],
+     ["[photo of form] Which boxes apply to me? I'm employed with one child.","The form and who you are.",1],
+     ["[photo of form] Fill it in for me.","It needs your details, and you must check it."]) ],
+ [ Q("Claude says a savings account pays 6% interest.",
+     ["Open it today. Claude knows the market and these rates well.","Rates change. It may be out of date."],
+     ["Check the bank's own website today.","Rates live on the bank's page.",1],
+     ["Ask Claude again to confirm.","Asking again doesn't make it current."]),
+   Q("Claude explains a tax rule that sounds right.",
+     ["Rely on it for your tax return. It sounds like it knows the rules.","Tax rules change, and it can be wrong."],
+     ["Check the tax agency's website or ask an adviser.","Rules belong to the authority.",1],
+     ["Ask for the law's article number and trust that.","It can invent a convincing number."]),
+   Q("An «investment tip» promises 20% returns, «AI-backed».",
+     ["Ask Claude if it's a good investment, and if it says yes, put money in.","It can't verify a scheme."],
+     ["Be suspicious. Guaranteed high returns are a classic scam sign.","If it sounds too good, it usually is.",1],
+     ["Invest a small amount to test it.","Small losses are still losses, and scams grow."]) ]
+],
+
+hobbies:[
+ [ Q("You want to plan a weekend hike.",
+     ["Best hikes near me?","Where is «near me»?"],
+     ["Day hike, 2 adults + dog, Valencia area, max 3 hours, shade. Ideas?","Who, where, how long, what you need.",1],
+     ["A really beautiful hike with fantastic views and not too crowded, please.","Adjectives, not facts."]),
+   Q("You need a new book to read.",
+     ["Recommend a good book.","Good for whom?"],
+     ["I loved Rebecca and The Thursday Murder Club. Not too dark. 3 books?","Your taste in specifics.",1],
+     ["What are the best books of all time that everybody should read once?","A famous list, not for you."]),
+   A("Suggest a hobby for me.",
+     ["\"Something fun.\"","Fun to whom?"],
+     ["\"Evenings, indoors, under €50 to start. I'm 52 and like making things.\"","Time, place, budget and what you enjoy.",1],
+     ["\"I'm a bit bored.\"","True, but it doesn't narrow anything."]) ],
+ null,
+ [ Q("Claude's garden plan puts tomatoes in the shade.",
+     ["Tomatoes need full sun. Move them to the south wall.","Says what's wrong and what to do.",1],
+     ["Redo the garden plan.","You'd lose the plan you mostly liked."],
+     ["That's wrong.","Which part?"]),
+   Q("Claude's family quiz is too hard.",
+     ["Make it easier for the kids, but keep the music round.","What to change and what to keep.",1],
+     ["Give me a completely different quiz that's easier for the kids.","You'd lose the rounds you liked."],
+     ["Too hard.","Too hard for whom? How much?"]),
+   Q("Claude's packing list is far too long.",
+     ["Cut it to hand luggage only, 4 days, warm weather.","The limit that shapes the list.",1],
+     ["Make another list, but try to be a bit more sensible this time.","It may be just as long."],
+     ["Which suitcase should I buy?","A different question."]) ],
+ [ Q("You'd like to learn to paint.",
+     ["Is painting hard to learn when you start late?","A pep talk, not a plan."],
+     ["Make me a 4-week plan, 15 minutes a day. I've never painted.","A plan for your time and level.",1],
+     ["Which paints should I buy as a total beginner?","Premature. Start with a plan."]),
+   Q("You'd like to practise your German before a trip.",
+     ["What are the most useful German phrases?","A list to memorise."],
+     ["Be a waiter in Berlin. I'll order; correct me after each line.","Real practice with feedback.",1],
+     ["Translate a list of menu words into German for me, with the pronunciation.","Handy, but you learn little."]),
+   Q("Your friends want a murder-mystery night.",
+     ["Where can I buy murder-mystery games?","A search question. Claude can write one."],
+     ["Write a murder mystery for 6 friends: roles, clues and the solution.","The finished game, ready to play.",1],
+     ["How do I run a murder-mystery evening for friends at home?","Advice. You still have to write it."]) ],
+ [ Q("A plant in your garden you can't name.",
+     ["What plants grow well in shade in a Spanish garden, and are they easy to look after?","General. You have a specific plant."],
+     ["[photo] Garden in Spain, shady corner. What is it? Safe for dogs?","Photo, place and your worry.",1],
+     ["[photo of plant] What is this?","A guess. Add where it grew and why you ask."]),
+   Q("A recipe card in your grandmother's handwriting.",
+     ["How do I read old handwriting when the ink has faded and the words are strange?","A skill, not your card."],
+     ["[photo of card] Write it out clearly in metric. Flag anything unclear.","It reads it and tidies it up.",1],
+     ["[photo of card] What does this say?","It reads it, but you asked nothing more."]),
+   Q("A bird in your garden you can't name.",
+     ["What birds live in Spanish gardens?","A long list. Which one is yours?"],
+     ["[photo] Small, brown, red chest. Spain, this morning. What is it?","Photo plus what you noticed.",1],
+     ["[photo] What is this bird?","A guess. Add the place and what you noticed."]) ],
+ [ Q("Claude suggests a path for a mountain walk.",
+     ["Follow it exactly. Claude knows the mountains and the paths there very well.","It may describe paths that don't exist."],
+     ["Check a map or the park's own site, and the weather, before you go.","A real map and a forecast.",1],
+     ["Ask Claude if the path is safe, then go.","It can't know today's conditions."]),
+   Q("Claude suggests a DIY electrical fix.",
+     ["Switch off the power and follow it.","Mains work can kill. It can't see your wiring."],
+     ["Call a qualified electrician.","Some jobs are for professionals.",1],
+     ["Ask it to double-check, then do it.","It can double-check and still be wrong."]),
+   Q("Claude gives opening hours for a museum you'll visit.",
+     ["Trust it. It's a famous museum, so the hours are surely correct.","Hours change, and it may be out of date."],
+     ["Check the museum's website before you go.","The museum is the source.",1],
+     ["Ask Claude if it's sure.","It will say yes."]) ]
+]
+};})();
+LANGS.es.extra=// EXTRA question pool (ES, Spain). Same structure and correct-answer positions as extra-en.js.
+(function(){
+const mk=o=>o.map(x=>x[2]?{t:x[0],ok:1,why:x[1]}:{t:x[0],why:x[1]});
+const Q=(task,...o)=>({task,opts:mk(o)});
+const ASK="¿Qué es lo más útil que puedes añadir?",YAB="Estás a punto de enviar esto.";
+const A=(msg,...o)=>({ask:ASK,msg,task:YAB,opts:mk(o)});
+return {
+everyday:[
+ [ Q("La lavadora ha empezado a perder agua.",
+     ["La lavadora pierde agua. ¿Qué le pasa?","¿Qué lavadora? ¿Por dónde sale el agua? Claude tiene que adivinar."],
+     ["Bosch, 6 años, pierde por la puerta al acabar. ¿Reparar o comprar?","Marca, edad, síntoma y la decisión real.",1],
+     ["¿Cuáles son las causas más comunes de fugas en una lavadora?","Una lista general. La tuya es una máquina concreta."]),
+   Q("Buscas un regalo para los 50 de tu hermana.",
+     ["¿Ideas de regalo para un 50 cumpleaños?","La misma lista de siempre. Nada sobre ella."],
+     ["Hermana cumple 50, le gusta la jardinería y cocinar, 60 €. ¿5 ideas?","Quién es, qué le gusta y cuánto gastas.",1],
+     ["Algo muy especial y significativo para mi maravillosa hermana, que se lo merece todo.","Todo sentimiento y ningún dato."]),
+   Q("Tu hijo adolescente solo dice «bien» en la cena.",
+     ["¿Cómo consigo que mi hijo adolescente hable conmigo?","Genérico. Claude no sabe la edad ni lo que has probado."],
+     ["Hijo, 15 años, solo dice «bien». Preguntar del cole no funciona. ¿Ideas?","La edad, el patrón y lo que ya falló.",1],
+     ["Los adolescentes son imposibles. Ayúdame, por favor.","Un suspiro, no una pregunta."]),
+   A("Hazme un menú de comidas para la semana.",
+     ["\"Que quede muy bien, por favor.\"","Claude lo intentará igualmente. No es información."],
+     ["\"Sin microondas en el trabajo, sin cerdo, unos 5 € al día.\"","Los límites que deciden cada comida.",1],
+     ["\"Los fines de semana disfruto cocinando.\"","Bueno saberlo, pero no afecta a las comidas diarias."]) ],
+ null,
+ [ Q("El plan de vacaciones de Claude está bien, pero el día 3 va muy cargado.",
+     ["El día 3 va cargado. Pasa el museo al día 2 y deja el resto.","Dice qué falla y qué se queda.",1],
+     ["Haz un plan de vacaciones totalmente distinto, con menos sitios y más descanso.","Perderías los días que te gustaban."],
+     ["Esto no está bien.","No sabe qué parte ni por qué."]),
+   Q("El correo de Claude a tu banco suena demasiado rígido.",
+     ["Abre un chat nuevo y pide un correo más amable para el banco, con los datos otra vez.","Olvida los datos que ya le diste."],
+     ["Más cercano, más corto, pero educado. Mantén los datos de la cuenta.","Qué cambiar y qué dejar igual.",1],
+     ["Demasiado formal.","Casi, pero ¿cuánto menos? ¿Qué se queda?"]),
+   Q("Claude te dio tres ideas de regalo. Te gusta la segunda.",
+     ["Dame tres ideas más.","Ya tienes una que te gusta. Parte de ella."],
+     ["¿Dónde puedo comprar la segunda y más o menos cuánto cuesta?","Se apoya en la idea que elegiste.",1],
+     ["Busca en internet dónde comprar regalos así.","Claude ya tiene la idea. Pregúntale a él."]),
+   Q("La respuesta de Claude es demasiado larga para leerla en el móvil.",
+     ["¿Me la puedes mandar en PDF?","La misma longitud, otro envoltorio."],
+     ["Es muy larga. Dame los 3 puntos principales, dos líneas cada uno.","Dice qué falla y la forma que quieres.",1],
+     ["Da igual, la leeré por encima.","Puedes pedirle la versión corta."]) ],
+ [ Q("Tienes que reclamar por una tostadora defectuosa.",
+     ["¿Cómo reclamo por un producto defectuoso y a quién tengo que enviar la reclamación?","Un consejo, y la carta la escribes tú."],
+     ["Reclamación: tostadora del 12 oct, rota a las 3 semanas. Quiero el reembolso.","Claude escribe la carta real. Tú la revisas.",1],
+     ["¿Qué derechos tengo como consumidor en España?","Bueno saberlo, pero no se envía nada."]),
+   Q("Tienes que dar un discurso por los 70 años de tu madre.",
+     ["Dame consejos para escribir un buen discurso para una gran fiesta familiar.","Consejos, y la página sigue en blanco."],
+     ["Hazme 5 preguntas sobre ella y luego escribe un discurso de 2 minutos.","Claude saca las anécdotas y después escribe.",1],
+     ["Escribe un discurso genérico para unos 70 años cualquiera.","No hay nada suyo en él."]),
+   Q("Quieres aprender a cocinar desde cero.",
+     ["¿Cuál es el mejor libro de cocina para principiantes?","Hábito de buscador. Claude puede enseñarte directamente."],
+     ["Enséñame 3 cenas fáciles, paso a paso, y espera a que acabe cada una.","Una clase paciente a tu ritmo.",1],
+     ["Enséñame a cocinar.","Demasiado amplio. ¿Por dónde empieza?"]),
+   Q("En casa discutís por quién hace qué.",
+     ["¿Cómo consigo que mis hijos ayuden en casa?","Un consejo. El reparto sigue sin escribir."],
+     ["Reparto semanal de tareas: dos adultos, hijos de 10 y 13. Justo, una página.","Claude entrega el reparto terminado.",1],
+     ["¿Funcionan de verdad los cuadros de tareas en las familias?","Una opinión, no un reparto."]) ],
+ [ Q("Una carta del ayuntamiento escrita en lenguaje administrativo espeso.",
+     ["¿Qué suelen enviar los ayuntamientos?","No ha visto tu carta."],
+     ["[foto de la carta] ¿Tengo que hacer algo? Con palabras sencillas.","Enséñasela y pregunta lo importante.",1],
+     ["[foto de la carta]","La describirá. No dirá qué importa."]),
+   Q("El router del wifi parpadea en rojo.",
+     ["Internet no funciona y lo he probado todo. ¡Ayúdame a arreglarlo!","No ve el router. Enséñaselo."],
+     ["[foto del router] La segunda luz está roja. ¿Qué pruebo primero?","La foto y una pregunta clara.",1],
+     ["¿Por qué parpadean en rojo los routers?","Una lista de causas. La tuya es una más."]),
+   Q("Una mancha en tu camisa favorita.",
+     ["¿Cómo se quitan las manchas de la ropa?","Cada mancha pide un tratamiento. Muy general."],
+     ["[foto] Vino tinto, hace 2 días, algodón. ¿Cómo la quito?","La foto no muestra causa ni tejido. Tú los añadiste.",1],
+     ["[foto] Mancha en una camisa.","Ve una mancha, no qué la causó."]),
+   Q("Una receta de un libro es para cuatro. Cocinas para dos.",
+     ["¿Cómo se reduce una receta a la mitad?","Una regla, no un resultado."],
+     ["[foto de la receta] Redúcela a la mitad para 2 y dame la lista de la compra.","Lee la receta y hace las cuentas.",1],
+     ["Pasa una receta de 4 raciones a 2, ajustando también los tiempos de cocción y las cantidades.","No hay ninguna receta en el mensaje."]) ],
+ [ Q("Claude te da un teléfono de tu ayuntamiento.",
+     ["Llama. Claude no se inventaría un número.","Los números son justo el tipo de dato que puede inventar."],
+     ["Busca el número en la web oficial del ayuntamiento.","Los datos de contacto, de la fuente real.",1],
+     ["Pídele a Claude que repita el número para confirmarlo.","Repetirá el mismo error."]),
+   Q("Claude cita una estadística exacta sobre tu pueblo.",
+     ["Úsala en tu presentación. Parece precisa.","Los números que suenan exactos pueden ser inventados."],
+     ["Pregúntale de dónde sale y comprueba tú la fuente.","Que muestre una fuente y mírala.",1],
+     ["Pregúntale otra vez. Si repite, es verdad.","Puede repetir un error con la misma seguridad."]),
+   Q("Necesitas ayuda con un formulario que pide tu DNI.",
+     ["Pégalo todo. Claude lo necesita.","Claude puede ayudar sin tus números reales."],
+     ["Usa números falsos para practicar. Rellena tú los reales.","Recibes ayuda y guardas lo privado.",1],
+     ["Nunca uses la IA con formularios.","Explica bien los formularios. Solo deja fuera los datos privados."]),
+   Q("Claude te recomienda un restaurante de tu ciudad.",
+     ["Reserva hoy mismo. Claude conoce muy bien la zona y sus restaurantes.","Puede nombrar sitios que cerraron o que nunca existieron."],
+     ["Comprueba que existe y está abierto antes de reservar.","Un vistazo al mapa o a su web.",1],
+     ["Pídele a Claude que confirme que hoy está abierto.","No puede saberlo si no busca."]) ]
+],
+
+work:[
+ [ Q("Tienes que rechazar una reunión con educación.",
+     ["Rechaza una reunión con educación.","¿Qué reunión? ¿Cuál es tu motivo?"],
+     ["Rechaza la reunión de presupuesto del martes (de baja). Propón el miércoles. Dos líneas.","Qué reunión, por qué, la alternativa y la longitud.",1],
+     ["Escribe un rechazo muy profesional, educado y amable para una reunión a la que no puedo ir.","Un tono, sin datos."]),
+   Q("Una conferencia te pide una biografía corta.",
+     ["Escríbeme una biografía profesional, atractiva y memorable para una charla importante.","Claude todavía no sabe nada de ti."],
+     ["Bio de 60 palabras: operaciones, 12 años en logística, Valencia. Cercana.","Los datos y la forma que necesitas.",1],
+     ["¿Qué hace buena una biografía de conferencia?","Consejos, pero sin biografía."]),
+   A("Escribe una nota corta a mi equipo sobre el retraso.",
+     ["\"Que suene positivo.\"","Claude ya lo haría. No dice nada al equipo."],
+     ["\"La nueva fecha es el 12 dic. No tienen que hacer nada.\"","Qué ha cambiado y qué deben hacer.",1],
+     ["\"Somos 8 personas en el equipo.\"","No es lo que necesita el mensaje."]) ],
+ null,
+ [ Q("El resumen de la reunión de Claude omite las decisiones.",
+     ["Añade un apartado «Decisiones» e indica quién se encarga de cada una.","Dice qué falta y cómo arreglarlo.",1],
+     ["Resúmelo otra vez, pero esta vez hazlo mucho mejor.","Probablemente saldría el mismo resumen."],
+     ["No era eso lo que quería.","No sabe qué faltaba."]),
+   Q("La respuesta de Claude a un proveedor debe sonar más firme.",
+     ["Escribe una respuesta totalmente nueva, pero más enfadada y directa.","Más enfadada no es más firme, y se pierde el borrador."],
+     ["Más firme, pero educada. Mantén el plazo de entrega.","Cambia el tono y conserva lo que funciona.",1],
+     ["Hazla mejor.","¿Mejor en qué?"]),
+   Q("El anuncio de empleo de Claude está bien. También lo necesitas para LinkedIn.",
+     ["Escribe un anuncio de LinkedIn para el mismo puesto, con los hashtags de siempre.","Empezar de cero ignora el anuncio que te gustó."],
+     ["Reduce ese anuncio a 600 caracteres para LinkedIn.","Parte del anuncio que aprobaste.",1],
+     ["Cópialo y recórtalo tú.","Claude lo recorta en segundos."]) ],
+ [ Q("Mañana tienes una conversación difícil con alguien de tu equipo.",
+     ["¿Cómo doy un feedback difícil?","Un consejo, no práctica."],
+     ["Haz de mi empleado. Practicaré y luego dime qué podría decir mejor.","Un ensayo seguro con feedback.",1],
+     ["Escribe el guion exacto para leerlo palabra por palabra mañana por la mañana.","Un guion leído suena frío."]),
+   Q("Tienes que comparar dos presupuestos de software.",
+     ["¿En qué debo fijarme en un presupuesto de software?","Una lista, y la comparación la haces tú."],
+     ["[presupuestos pegados] Ponlos en una tabla y señala qué es distinto.","Claude hace la comparación.",1],
+     ["¿Qué empresa de software es la mejor?","No conoce tus necesidades ni los presupuestos."]),
+   Q("Tienes que presentar al consejo la semana que viene.",
+     ["¿Cómo hago una presentación realmente buena ante un consejo de administración?","Consejos generales."],
+     ["Haz de consejero escéptico. Presento yo y tú haces preguntas duras.","Un ensayo exigente.",1],
+     ["Escribe toda la presentación para que la lea.","Leer sin más suena rígido."]) ],
+ [ Q("Un cliente te envía un contrato escaneado.",
+     ["¿En qué debo fijarme en un contrato como este antes de firmar?","Una lista, no este contrato."],
+     ["[PDF] ¿A qué me comprometo y cuáles son los plazos?","El documento y las preguntas que importan.",1],
+     ["[PDF] Resume.","Vago. ¿Resumir para qué?"]),
+   Q("Te llega en PDF la lista de precios de un competidor.",
+     ["¿Cómo analizo los precios de un competidor sin cometer errores tontos?","Un método, no tu comparación."],
+     ["[PDF] Compáralo con mis precios [pegados]. ¿Dónde son más baratos?","Las dos listas y una pregunta clara.",1],
+     ["[PDF] ¿Es más barato que nosotros?","No conoce tus precios."]),
+   Q("Una foto de la pizarra de una reunión larga.",
+     ["¿Cómo tomo mejores notas en las reuniones para no fotografiar la pizarra?","No trata de tu pizarra."],
+     ["[foto] Pásalo a notas con tareas y responsables.","Lo lee y lo ordena.",1],
+     ["[foto] ¿Qué pone aquí?","Lo lee, pero no organiza nada."]) ],
+ [ Q("Claude redacta una cláusula legal para tu contrato.",
+     ["Úsala. Es una redacción estándar.","La redacción legal depende del país y del caso."],
+     ["Que la lea un abogado antes de firmar.","Alguien que responde de acertar.",1],
+     ["Pregúntale a Claude si es legal. Si dice que sí, firma.","Puede sonar seguro y equivocarse."]),
+   Q("Claude escribe un correo en un idioma que no hablas.",
+     ["Envíalo. Claude es muy bueno con los idiomas.","Bueno, pero un pequeño fallo puede cambiar el sentido."],
+     ["Que lo lea alguien nativo antes de enviarlo, por si hay algún fallo.","Quien lo habla nota los fallos.",1],
+     ["Tradúcelo de vuelta con Claude para confirmarlo.","La misma herramienta puede repetir el mismo error."]),
+   Q("Quieres que Claude analice un archivo con datos de clientes.",
+     ["Son solo nombres y correos, nada delicado. Pégalo todo, sin quitar nada.","Los datos de clientes pueden estar protegidos por la normativa de privacidad."],
+     ["Quita antes nombres y datos, o consulta la política de la empresa.","Comparte solo lo que necesita la tarea.",1],
+     ["Dile a Claude que los datos son confidenciales.","Decirlo no cambia adónde van los datos."]) ]
+],
+
+health:[
+ [ Q("Quieres reducir el azúcar.",
+     ["¿Cómo puedo reducir el azúcar?","La respuesta genérica a una pregunta general."],
+     ["Tres cafés con azúcar al día y una galleta a las 4. Ayúdame a reducir poco a poco.","Tus hábitos reales y un objetivo suave.",1],
+     ["Dame los mejores trucos sin azúcar que funcionen de verdad.","La misma lista para todos."]),
+   A("Dame una tabla de estiramientos de 20 minutos por la mañana.",
+     ["\"Que sea efectiva.\"","Claude lo intentará igualmente. No es información."],
+     ["\"Lumbares rígidas por trabajar sentado. Sin material.\"","El problema y los límites.",1],
+     ["\"Estoy bastante en forma.\"","Está bien saberlo, pero no es el dato clave."]),
+   Q("Quieres comidas que ayuden a bajar el colesterol.",
+     ["Mejores alimentos para el colesterol.","Una lista de alimentos, no comidas para ti."],
+     ["Tengo el colesterol alto. Me gusta el pescado, odio las lentejas. ¿Cenas para una semana?","Lo que necesitas, te gusta y no te gusta.",1],
+     ["¿Qué comidas saludables debería tomar para bajar el colesterol lo antes posible y sin pasar hambre?","General, y sin nadie concreto en la mesa."]) ],
+ null,
+ [ Q("El plan de caminatas de Claude es demasiado duro.",
+     ["No puedo con esto.","Claude no sabe qué es demasiado."],
+     ["Empieza más fácil: 10 minutos, 3 días a la semana. La misma idea.","Dice cuánto y conserva el plan.",1],
+     ["Dame un plan totalmente distinto, que no tenga tanto caminar ni tantas cuestas.","Perderías el plan que habías empezado."]),
+   Q("El plan de comidas de Claude lleva pescado y lo odias.",
+     ["Empieza de nuevo con un plan nuevo que no lleve nada de pescado.","Perderías todo lo demás que te gustaba."],
+     ["Cambia las cenas de pescado por pollo o huevos. Deja el resto.","Un cambio, y el resto se queda.",1],
+     ["No me gusta.","No sabe qué cambiar."]),
+   Q("Te gusta la rutina de estiramientos de Claude, pero la quieres más corta.",
+     ["¿Qué app de estiramientos es mejor para la oficina?","Volvemos a buscar."],
+     ["Redúcela a 5 minutos que pueda hacer en mi mesa.","Mantiene la rutina y cambia la duración.",1],
+     ["Hazme una rutina nueva para la oficina.","Perderías la que te gustaba."]) ],
+ [ Q("Te gustaría ganar fuerza en casa.",
+     ["¿Vale la pena empezar con ejercicios de fuerza pasados los 50, o ya es tarde?","Bueno saberlo, pero sigues sin plan."],
+     ["Plan de fuerza en casa de 4 semanas. Tengo 50, sin material, 20 minutos.","Un plan hecho a tu medida.",1],
+     ["¿Cómo suele empezar la gente con los ejercicios de fuerza?","General, y sigues necesitando el plan."]),
+   Q("Quieres cocinar con menos sal.",
+     ["¿Qué es una dieta baja en sal?","Información, pero ninguna cena."],
+     ["Planifica 5 cenas bajas en sal para dos, en menos de 40 minutos, con lista de la compra.","El plan y la lista.",1],
+     ["¿Qué webs de recetas son buenas para comer sano?","Una pregunta de buscador."]),
+   Q("Te gustaría probar la meditación, pero no sabes cómo.",
+     ["¿Es buena la meditación?","Buena pregunta. Pero todavía no has probado."],
+     ["Guíame en un ejercicio de respiración de 5 minutos. Soy un total principiante.","Claude puede guiarte ahora mismo.",1],
+     ["¿Cuál es la mejor app de meditación para principiantes?","Volvemos a buscar."]) ],
+ [ Q("Una carta del hospital trae una fecha pero pocos detalles.",
+     ["¿Qué debería llevar normalmente a una cita en el hospital y con cuánta antelación llegar?","General. Tu carta dice lo concreto."],
+     ["[foto de la carta] ¿Cuándo es mi cita y qué tengo que llevar?","La carta y las dos cosas que necesitas.",1],
+     ["[foto de la carta] Resume esto.","Un resumen puede saltarse la fecha que necesitas."]),
+   Q("Un gráfico de pasos en tu móvil que no sabes interpretar.",
+     ["¿Cuántos pasos al día son buenos?","Una cifra general, no tu semana."],
+     ["[captura] ¿Qué muestra mi semana? ¿Un pequeño cambio que pueda hacer?","Tus datos y una petición útil.",1],
+     ["[captura] ¿Estoy sano?","Un gráfico de pasos no puede decirlo."]),
+   Q("Una etiqueta de alimentos que no entiendes.",
+     ["¿Qué es una dieta saludable?","Demasiado amplio para esta etiqueta."],
+     ["[foto de la etiqueta] ¿Cuánto azúcar por ración? ¿Y en total en 2 raciones?","La etiqueta y la cuenta que necesitas.",1],
+     ["[foto de la etiqueta]","Lee la etiqueta, pero no lo que quieres."]) ],
+ [ Q("Un amigo te manda una «cura milagrosa» escrita por una IA.",
+     ["Pruébala un par de semanas. Puede ayudar, y mucha gente jura por ella.","Las afirmaciones de salud necesitan pruebas reales."],
+     ["Consúltalo con un médico o farmacéutico y busca la fuente original.","Primero, las pruebas.",1],
+     ["Pregúntale a Claude si funciona.","Puede sonar seguro en ambos casos."]),
+   Q("Claude dice que podrías dejar tu medicación.",
+     ["Déjala si Claude dice que es seguro.","No ve tu salud ni tu historial."],
+     ["Nunca cambies una medicación sin consultar a tu médico.","Algunos medicamentos son peligrosos de dejar.",1],
+     ["Redúcela poco a poco durante unas semanas, por si acaso.","Sigue siendo arriesgado. Primero, el médico."]),
+   Q("Claude dice que una erupción rara «probablemente no es nada».",
+     ["De acuerdo. Claude ha visto muchas erupciones.","No puede ver ni examinar tu piel."],
+     ["Si se extiende, duele o viene con fiebre, ve al médico.","Algunas señales piden una revisión de verdad.",1],
+     ["Pídele a Claude que lo piense otra vez y decide después de forma definitiva.","Otra opinión de la misma fuente."]) ]
+],
+
+money:[
+ [ Q("Estás comparando dos operadores de internet.",
+     ["¿Cuál es el mejor operador de internet para mi familia en mi zona ahora mismo?","¿Mejor para quién?"],
+     ["¿Fibra 600 Mb a 35 € o 300 Mb a 28 €? 3 personas, sobre todo series.","Las opciones reales y cómo la usarás.",1],
+     ["Barato, rápido, sin permanencia. ¿Cuál?","Contradictorio. Claude tiene que elegir."]),
+   Q("Te preguntas cuánto coche puedes permitirte.",
+     ["¿Cuánto debería gastar en un coche una persona con un sueldo medio hoy en día?","Una regla general, no tu respuesta."],
+     ["Neto 2.100 €, alquiler 700 €, sin deudas. ¿Cuánto coche, con gastos incluidos?","Tus números y el coste completo.",1],
+     ["¿Cuál es el mejor coche por el dinero?","¿Mejor para quién?"]),
+   A("Explícame cómo funciona una hipoteca.",
+     ["\"Que sea sencillo.\"","Claude ya lo intentaría."],
+     ["\"Primera vivienda, piso de 180.000 €, 20 años. Usa estos números.\"","Tus propios números con los que trabajar.",1],
+     ["\"Nunca he tenido una.\"","Útil, pero los números importan más."]) ],
+ null,
+ [ Q("El presupuesto del hogar de Claude es demasiado ajustado.",
+     ["Deja 100 € para ocio y 50 € para el perro. Reajusta el resto.","Dice qué proteger para que pueda reequilibrar.",1],
+     ["Hazme un presupuesto totalmente nuevo, pero algo más realista.","Perderías las cifras que ya calculó."],
+     ["Esto no va a funcionar.","No sabe por qué."]),
+   Q("La explicación de Claude sobre los tramos del IRPF es confusa.",
+     ["Explica otra vez los tramos.","Probablemente la misma explicación."],
+     ["Usa mi propio ejemplo: 30.000 € al año. Muéstrame cada paso.","Con tus números se vuelve concreto.",1],
+     ["Mándame un enlace con las normas fiscales.","Claude puede explicarlo mejor aquí mismo."]),
+   Q("La carta de Claude a tu casero suena demasiado enfadada.",
+     ["Reescribe la carta y esta vez hazla un poco más amable.","Perderías lo que estaba bien."],
+     ["Más calmada. Quiero la fianza. Mantén las fechas.","Dice qué cambiar y qué conservar.",1],
+     ["Da igual. La envío tal cual.","Claude puede suavizarla en segundos."]) ],
+ [ Q("Quieres pedir al banco un tipo de hipoteca más bajo.",
+     ["¿Cómo pido al banco un tipo mejor para la hipoteca?","Un consejo, y la solicitud la escribes tú."],
+     ["Redacta mi solicitud: 3 años pagando, tipo 4,1 %, nunca he fallado un pago. Educada y firme.","Claude redacta la solicitud real.",1],
+     ["¿Cómo están ahora los tipos de las hipotecas?","Puede estar desactualizado."]),
+   Q("Quieres llevar el control de los gastos del mes.",
+     ["¿Qué app de presupuestos es la mejor?","Una pregunta de buscador. Claude puede montarlo."],
+     ["Monta una tabla de presupuesto mensual: ingresos, alquiler, comida, facturas, ocio. Pídeme mis cifras.","Claude la construye y pide los datos.",1],
+     ["¿Cómo se hace un presupuesto?","Una lección, y la tabla sigue vacía."]),
+   Q("No sabes si comprar o alquilar.",
+     ["¿Comprar es siempre mejor que alquilar, a largo plazo, si miras bien todos los números?","Depende. ¿De qué? Claude puede preguntarlo."],
+     ["Hazme preguntas sobre mi situación y luego compara las dos opciones con números.","Deja que Claude te entreviste y compare.",1],
+     ["Precios de pisos en mi ciudad.","No puede dar precios actualizados."]) ],
+ [ Q("Una póliza de seguro con mucha letra pequeña.",
+     ["¿Qué debería cubrir normalmente un seguro y qué suele pasar desapercibido?","General. No es tu póliza."],
+     ["[foto de la póliza] ¿Qué cubre, qué no cubre y cuál es la franquicia?","Tu documento y las tres cosas que importan.",1],
+     ["[foto de la póliza] ¿Es una buena póliza?","Buena comparada con qué."]),
+   Q("Un extracto del banco con un cargo que no reconoces.",
+     ["¿Cuáles son las comisiones bancarias más comunes que pasan desapercibidas y puedo evitarlas?","Una lista, no tu cargo."],
+     ["[foto, nº de cuenta tapado] ¿Qué cargos son raros? ¿Qué es este?","Se lo enseñas y ocultas el número privado.",1],
+     ["[foto del extracto, sin tapar nada]","Tapa antes tu número de cuenta."]),
+   Q("Un formulario de Hacienda con casillas que no entiendes.",
+     ["¿Cómo funcionan los formularios de impuestos en general y qué pasa si relleno uno mal?","Una respuesta general. Tú tienes un formulario concreto."],
+     ["[foto del formulario] ¿Qué casillas me tocan? Soy asalariado con un hijo.","El formulario y quién eres.",1],
+     ["[foto del formulario] Rellénalo por mí.","Necesita tus datos y tú debes revisarlo."]) ],
+ [ Q("Claude dice que una cuenta de ahorro paga un 6 % de interés.",
+     ["Ábrela hoy. Claude conoce el mercado y estos tipos muy bien.","Los tipos cambian. Puede estar desactualizado."],
+     ["Mira hoy la web del propio banco.","Los tipos están en la página del banco.",1],
+     ["Pídele a Claude que lo confirme otra vez.","Preguntar otra vez no lo actualiza."]),
+   Q("Claude explica una norma fiscal que suena bien.",
+     ["Fíate de ella para tu declaración. Parece que conoce las normas.","Las normas fiscales cambian y puede equivocarse."],
+     ["Mira la web de la Agencia Tributaria o consulta a un asesor.","Las normas son de la autoridad.",1],
+     ["Pídele el número del artículo de la ley y fíate de eso.","Puede inventar un número convincente."]),
+   Q("Un «consejo de inversión» promete un 20 % de rentabilidad, «respaldado por IA».",
+     ["Pregúntale a Claude si es una buena inversión y, si dice que sí, mete dinero ya mismo.","No puede verificar un esquema así."],
+     ["Desconfía. Las altas rentabilidades garantizadas son una señal clásica de estafa.","Si suena demasiado bueno, suele serlo.",1],
+     ["Invierte una pequeña cantidad para probar.","Las pérdidas pequeñas siguen siendo pérdidas y las estafas crecen."]) ]
+],
+
+hobbies:[
+ [ Q("Quieres planear una ruta de senderismo para el fin de semana.",
+     ["¿Mejores rutas cerca de mí?","¿Dónde es «cerca de mí»?"],
+     ["Ruta de un día, 2 adultos + perro, zona de Valencia, máx. 3 horas, sombra. ¿Ideas?","Quién, dónde, cuánto y qué necesitas.",1],
+     ["Una ruta preciosa con vistas fantásticas y sin demasiada gente, por favor, y que no sea muy dura.","Adjetivos, no datos."]),
+   Q("Necesitas un libro nuevo para leer.",
+     ["Recomiéndame un buen libro.","¿Bueno para quién?"],
+     ["Me encantaron Rebeca y El Club del Crimen de los Jueves. Nada muy oscuro. ¿3 libros?","Tus gustos, con nombres concretos.",1],
+     ["¿Cuáles son los mejores libros de todos los tiempos?","Una lista famosa, no para ti."]),
+   A("Sugiéreme una afición.",
+     ["\"Algo divertido.\"","¿Divertido para quién?"],
+     ["\"Por las tardes, en casa, menos de 50 € para empezar. Tengo 52 años y me gusta hacer cosas con las manos.\"","Tiempo, lugar, presupuesto y lo que disfrutas.",1],
+     ["\"Estoy un poco aburrido.\"","Cierto, pero no acota nada."]) ],
+ null,
+ [ Q("El plan de huerto de Claude pone los tomates a la sombra.",
+     ["Los tomates necesitan pleno sol. Ponlos en la pared sur.","Dice qué falla y qué hacer.",1],
+     ["Rehaz el plan del huerto.","Perderías el plan que casi te gustaba."],
+     ["Eso está mal.","¿Qué parte?"]),
+   Q("El concurso familiar de Claude es demasiado difícil.",
+     ["Hazlo más fácil para los niños, pero deja la ronda de música.","Qué cambiar y qué conservar.",1],
+     ["Dame un concurso totalmente distinto y más fácil para los niños.","Perderías las rondas que te gustaban."],
+     ["Es muy difícil.","¿Difícil para quién? ¿Cuánto?"]),
+   Q("La lista de equipaje de Claude es demasiado larga.",
+     ["Redúcela a solo equipaje de mano, 4 días, clima cálido.","El límite que da forma a la lista.",1],
+     ["Haz otra lista, pero intenta ser algo más sensato esta vez.","Podría salir igual de larga."],
+     ["¿Qué maleta debería comprar?","Otra pregunta distinta."]) ],
+ [ Q("Te gustaría aprender a pintar.",
+     ["¿Es difícil aprender a pintar si empiezas tarde?","Una charla de ánimo, no un plan."],
+     ["Hazme un plan de 4 semanas, 15 minutos al día. Nunca he pintado.","Un plan para tu tiempo y tu nivel.",1],
+     ["¿Qué pinturas debería comprar siendo un principiante total?","Prematuro. Empieza con un plan."]),
+   Q("Te gustaría practicar tu alemán antes de un viaje.",
+     ["¿Cuáles son las frases más útiles en alemán?","Una lista para memorizar."],
+     ["Haz de camarero en Berlín. Yo pido; corrígeme después de cada línea.","Práctica real con feedback.",1],
+     ["Tradúceme al alemán una lista de palabras de menú, con la pronunciación.","Cómodo, pero aprendes poco."]),
+   Q("Tus amigos quieren una noche de misterio y asesinato.",
+     ["¿Dónde puedo comprar juegos de misterio y asesinato?","Una pregunta de buscador. Claude puede escribir uno."],
+     ["Escribe un misterio para 6 amigos: personajes, pistas y solución.","El juego terminado, listo para jugar.",1],
+     ["¿Cómo organizo una noche de misterio con amigos en casa?","Un consejo. Aún tendrías que escribirlo."]) ],
+ [ Q("Una planta de tu jardín que no sabes cómo se llama.",
+     ["¿Qué plantas crecen bien a la sombra en un jardín español y son fáciles de cuidar?","General. Tú tienes una planta concreta."],
+     ["[foto] Jardín en España, rincón en sombra. ¿Qué es? ¿Es segura para perros?","Foto, lugar y lo que te preocupa.",1],
+     ["[foto de la planta] ¿Qué es esto?","Una suposición. Añade dónde crecía y por qué lo preguntas."]),
+   Q("Una ficha de receta con la letra de tu abuela.",
+     ["¿Cómo leo letra antigua cuando la tinta se ha borrado y las palabras son raras?","Una habilidad, no tu ficha."],
+     ["[foto de la ficha] Escríbela clara en métrico. Señala lo dudoso.","La lee y la deja limpia.",1],
+     ["[foto de la ficha] ¿Qué pone?","La lee, pero no pediste nada más."]),
+   Q("Un pájaro de tu jardín que no sabes cómo se llama.",
+     ["¿Qué pájaros viven en los jardines españoles?","Una lista larga. ¿Cuál es el tuyo?"],
+     ["[foto] Pequeño, marrón, pecho rojo. España, esta mañana. ¿Cuál es?","La foto y lo que viste.",1],
+     ["[foto] ¿Qué pájaro es este?","Una suposición. Añade el lugar y lo que notaste."]) ],
+ [ Q("Claude te propone un sendero para una caminata de montaña.",
+     ["Síguelo al pie de la letra. Claude conoce muy bien la montaña y sus senderos.","Puede describir senderos que no existen."],
+     ["Mira un mapa o la web del parque, y el tiempo, antes de salir.","Un mapa real y una previsión.",1],
+     ["Pregúntale a Claude si el sendero es seguro y ve.","No puede saber las condiciones de hoy."]),
+   Q("Claude te sugiere un arreglo eléctrico casero.",
+     ["Corta la luz y sigue sus pasos.","La corriente puede matar. No ve tu instalación."],
+     ["Llama a un electricista cualificado.","Algunos trabajos son para profesionales.",1],
+     ["Pídele que lo compruebe otra vez y hazlo.","Puede comprobarlo y seguir equivocado."]),
+   Q("Claude te da el horario de un museo que vas a visitar.",
+     ["Fíate. Es un museo famoso, así que el horario seguro que es correcto.","Los horarios cambian y puede estar desactualizado."],
+     ["Mira la web del museo antes de ir.","El museo es la fuente.",1],
+     ["Pregúntale a Claude si está seguro.","Dirá que sí."]) ]
+]
+};})();
 const ICONS={home:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>',work:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2M3 13h18"/></svg>',health:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg>',money:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5A4 4 0 1 0 15.5 15.5M7 11h6M7 13.5h6"/></svg>',leaf:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-9 6-14 15-14 0 9-5 15-14 15"/><path d="M5 19 13 11"/></svg>'};
 const BELT_COL=["#ffffff","#f2c230","#f08a24","#3aa35b","#2f6fd6","#8a5a34","#1b1a1f"];
 
 const $=s=>document.querySelector(s), mat=$("#mat"), say=t=>{$("#say").textContent=t;const m=$("#saym");if(m)m.textContent=t};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-let st={won:{},pos:{},cur:0,lang:"en",theme:"everyday"};
+let st={won:{},pos:{},seen:{},cur:0,lang:"en",theme:"everyday"};
 let hadSave=false;try{const s=JSON.parse(localStorage.getItem("pdojo3")||"null");if(s&&s.won){st=Object.assign(st,s);hadSave=true}}catch(e){}
 if(!hadSave){try{if(/^es\b/i.test(navigator.language||""))st.lang="es"}catch(e){}}
-if(Array.isArray(st.won))st.won={everyday:st.won};if(!st.won||typeof st.won!=="object")st.won={};if(!st.pos||typeof st.pos!=="object")st.pos={};if(!LANGS[st.lang])st.lang="en";
+if(Array.isArray(st.won))st.won={everyday:st.won};if(!st.won||typeof st.won!=="object")st.won={};if(!st.pos||typeof st.pos!=="object")st.pos={};if(!st.seen||typeof st.seen!=="object")st.seen={};if(!LANGS[st.lang])st.lang="en";
 const save=()=>{try{localStorage.setItem("pdojo3",JSON.stringify(st))}catch(e){}};
 let L,U,BELTS;
 const W=()=>st.won[st.theme]||(st.won[st.theme]=[]);
 const open=i=>i===0||W().includes(i-1)||W().includes(i);
 const TH=()=>L.themes.find(t=>t.id===st.theme)||L.themes[0];
-const qsOf=i=>TH().qs?TH().qs[i]:BELTS[i].qs;
+const baseQs=i=>TH().qs?TH().qs[i]:BELTS[i].qs;
+const poolOf=i=>{const ex=L.extra&&L.extra[st.theme]&&L.extra[st.theme][i];return ex?baseQs(i).concat(ex):baseQs(i)};
+const shuf=a=>{a=a.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]]}return a};
+/* Draw a fresh set of questions for a belt, avoiding ones seen in recent attempts. */
+function drawSet(i){
+  const pool=poolOf(i),n=baseQs(i).length,key=st.theme+":"+i;
+  let seen=(st.seen[key]||[]).filter(k=>k<pool.length);
+  let got=shuf(pool.map((_,k)=>k).filter(k=>!seen.includes(k))).slice(0,n);
+  if(got.length<n){const old=seen.filter(k=>!got.includes(k)).slice(0,n-got.length);got=got.concat(old);st.seen[key]=got.slice()}
+  else st.seen[key]=seen.concat(got);
+  return shuf(got);
+}
+const setOf=(i,set)=>(Array.isArray(set)&&set.length?set:baseQs(i).map((_,k)=>k)).filter(k=>poolOf(i)[k]);
+const qsOf=(i,set)=>{const pool=poolOf(i);return setOf(i,set).map(k=>pool[k])};
 const buildOf=()=>TH().build||L.build, freeOf=()=>TH().free||L.free;
-function resume(){const p=st.pos[st.theme];if(p&&BELTS[p.i]&&BELTS[p.i].type==="pick"){st.cur=p.i;rack();pick(p.i,p.q,p.right)}else{rack();start(Math.min(st.cur||0,BELTS.length-1),true)}}
+function resume(){const p=st.pos[st.theme];if(p&&BELTS[p.i]&&BELTS[p.i].type==="pick"){st.cur=p.i;rack();pick(p.i,p.q,p.right,p.set)}else{rack();start(Math.min(st.cur||0,BELTS.length-1),true)}}
 function themes(){
   $("#themes").innerHTML=`<h3>${U.themesLabel}</h3>`+L.themes.map(t=>`<button class="th" aria-pressed="${t.id===st.theme}" data-t="${t.id}"><em>${(st.won[t.id]||[]).length}/7${st.pos[t.id]&&t.id!==st.theme?`<span class="ip"> · ${U.inProgress}</span>`:""}</em><b>${ICONS[t.icon]||""}${esc(t.name)}</b><small>${esc(t.blurb)}</small></button>`).join("");
 }
 $("#themes").addEventListener("click",e=>{const b=e.target.closest(".th");if(!b||b.dataset.t===st.theme)return;
   const from=TH().name;st.theme=b.dataset.t;const p=st.pos[st.theme],w=W();
-  if(p&&BELTS[p.i]&&BELTS[p.i].type==="pick"){st.cur=p.i;save();rack();pick(p.i,p.q,p.right);say(U.resumed(TH().name))}
+  if(p&&BELTS[p.i]&&BELTS[p.i].type==="pick"){st.cur=p.i;save();rack();pick(p.i,p.q,p.right,p.set);say(U.resumed(TH().name))}
   else{st.cur=w.length?Math.min(Math.max(...w)+1,6):0;save();start(st.cur,true);say(U.saved(from))}});
 
 function setLang(code){
@@ -1080,16 +1789,16 @@ function rack(just){
   $("#rack").innerHTML=BELTS.map((b,i)=>`<button class="belt ${W().includes(i)?"won":""} ${open(i)?"open":""} ${i===st.cur?"cur":""} ${i===just?"just":""}" data-i="${i}" ${open(i)?"":"disabled"} aria-label="${esc(U.beltOf(b.name))}: ${esc(b.skill)}${W().includes(i)?` (${U.earned})`:open(i)?"":` (${U.locked})`}"><i style="background:${BELT_COL[i]}"></i><span>${esc(b.name)}</span></button>`).join("");
 }
 $("#rack").addEventListener("click",e=>{const b=e.target.closest(".belt");if(b&&!b.disabled)start(+b.dataset.i)});
-$("#reset").onclick=()=>{st.won[st.theme]=[];delete st.pos[st.theme];st.cur=0;save();say(U.resetDone);start(0,true)};
+$("#reset").onclick=()=>{st.won[st.theme]=[];delete st.pos[st.theme];Object.keys(st.seen).filter(k=>k.indexOf(st.theme+":")===0).forEach(k=>delete st.seen[k]);st.cur=0;save();say(U.resetDone);start(0,true)};
 
 function head(b,n,total){
   return `<div class="meta"><span>${esc(U.beltOf(b.name))} · ${esc(b.skill)}</span>${total?`<span class="pips">${Array.from({length:total},(_,k)=>`<b class="${k<n?"d":k===n?"c":""}"></b>`).join("")}</span>`:""}</div><p class="intro">${esc(b.intro)}</p>`;
 }
 function start(i,quiet){st.cur=i;save();rack();const b=BELTS[i];if(!quiet)say(U.go);
-  if(b.type==="pick")pick(i,0,0);else if(b.type==="build")build(i);else free(i);}
+  if(b.type==="pick")pick(i,0,0,drawSet(i));else if(b.type==="build")build(i);else free(i);}
 
-function pick(i,q,right){
-  const b=BELTS[i],QS=qsOf(i),Q=QS[q];st.pos[st.theme]={i,q,right};save();
+function pick(i,q,right,set){
+  set=setOf(i,set);const b=BELTS[i],QS=qsOf(i,set),Q=QS[q];st.pos[st.theme]={i,q,right,set};save();
   const order=Q.opts.map((o,k)=>k).sort(()=>Math.random()-.5);
   mat.innerHTML=head(b,q,QS.length)+`<h2>${esc(Q.ask||U.pickQ)}</h2>
    <div class="task"><strong>${U.situation}:</strong> ${esc(Q.task)}${Q.msg?`<div class="pane" style="margin-top:10px">${esc(Q.msg)}</div>`:""}</div>
@@ -1103,8 +1812,8 @@ function pick(i,q,right){
     $("#why").innerHTML=`<div class="why"><strong>${good?U.gotIt:U.catch}</strong> ${esc(o.why)}${good?"":`<br><br><strong>${U.better}:</strong> ${esc(best.why)}`}</div>
      <div class="row"><button class="btn" id="nx">${last?U.finish:U.next}</button></div>`;
     $("#nx").focus();
-    st.pos[st.theme]=last?null:{i,q:q+1,right};save();
-    $("#nx").onclick=()=>last?finish(i,right,QS.length):pick(i,q+1,right);
+    st.pos[st.theme]=last?null:{i,q:q+1,right,set};save();
+    $("#nx").onclick=()=>last?finish(i,right,QS.length):pick(i,q+1,right,set);
   });
 }
 
@@ -1112,7 +1821,7 @@ function build(i){
   const b=BELTS[i],B=buildOf(),on=new Set();
   mat.innerHTML=head(b)+`<h2>${U.buildQ}</h2>
    <div class="task"><strong>${U.task}:</strong> ${esc(B.task)}</div><p class="small">${U.buildHint}</p>
-   <div class="chips">${B.chips.map(c=>`<button class="chip" aria-pressed="false" data-id="${c.id}">${esc(c.t)}</button>`).join("")}</div>
+   <div class="chips">${shuf(B.chips).map(c=>`<button class="chip" aria-pressed="false" data-id="${c.id}">${esc(c.t)}</button>`).join("")}</div>
    <div class="small">${U.quality}</div><div class="meter"><i id="mt"></i></div>
    <div class="two"><div class="pane"><h3>${U.yourMsg}</h3><div id="pp"></div></div><div class="pane"><h3>${U.likely}</h3><div id="rp"></div></div></div>
    <div class="row"><button class="btn" id="chk">${U.check}</button></div><div id="why"></div>`;
@@ -1140,7 +1849,7 @@ function finish(i,right,total){
   mat.innerHTML=head(b)+`<div class="score">${right}/${total}</div>
    <h2 style="margin-top:8px">${pass?esc(U.won(b.name)):U.notYet}</h2>
    <p class="lede">${esc(pass?U.unlocked(b.skill.toLowerCase()):U.need(need,total))}</p>
-   <div class="row">${pass&&nxt!==null?`<button class="btn red" id="go">${esc(U.goNext(BELTS[nxt].name))}</button>`:""}<button class="btn ghost" id="re">${U.retry}</button></div>`;
+   <div class="row">${pass&&nxt!==null?`<button class="btn red" id="go">${esc(U.goNext(BELTS[nxt].name))}</button>`:""}<button class="btn ghost" id="re">${b.type==="pick"?U.retryNew:U.retry}</button></div>`;
   say(pass?U.bow:U.fail);
   $("#re").onclick=()=>start(i);
   if($("#go"))$("#go").onclick=()=>start(nxt);
