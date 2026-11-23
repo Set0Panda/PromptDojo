@@ -89,11 +89,11 @@ ul.fb{margin:6px 0 0;padding-left:20px}
 .th em{font-style:normal;font-size:13px;color:var(--mute);float:right}
 .th[aria-pressed=true]{border-color:var(--red);box-shadow:inset 5px 0 0 var(--red)}
 .th:focus-visible{outline:3px solid var(--red);outline-offset:2px}
-@media(max-width:820px){.stage{grid-template-columns:minmax(0,1fr)}.themes{flex-direction:row;overflow-x:auto;position:static;padding-bottom:4px}.themes h3{display:none}.th{flex:none;max-width:190px}}
+@media(max-width:820px){.stage{grid-template-columns:minmax(0,1fr)}.themes{display:grid;grid-template-columns:1fr 1fr;position:static}.themes h3{display:none}.themes .th:last-child:nth-child(even){grid-column:1/-1}}
 .intro{margin:0 0 6px;color:var(--mute);font-size:15px}
 .th b svg{width:20px;height:20px;vertical-align:-4px;margin-right:8px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;color:var(--red)}
 .saym{display:none}
-@media(max-width:600px){.wall{padding:14px 16px 12px;border-bottom-width:4px}.top{gap:0}h1{font-size:28px}.sub{font-size:15px;margin-top:2px}.lede,.sensei{display:none}.rack{gap:4px;margin-top:10px}.belt{flex:1 1 0;min-width:0}.belt span{display:none}.belt i{height:14px}.belt i::after{display:none}main.band{padding:12px 12px 24px}.matcard{padding:14px;border-radius:14px}h2{font-size:20px}.task{padding:8px 12px;margin:10px 0}.opts{gap:8px;margin-top:10px}.opt{padding:12px 14px}.th{padding:8px 12px;display:flex;align-items:center;gap:8px}.th b{white-space:nowrap}.th em{float:none;order:2}.th small{display:none}.saym{display:block;margin:0 0 8px;font-size:14px;color:var(--mute);min-height:1.4em}.meta{margin-bottom:4px}}
+@media(max-width:600px){.wall{padding:14px 16px 12px;border-bottom-width:4px}.top{gap:0}h1{font-size:28px}.sub{font-size:15px;margin-top:2px}.lede,.sensei{display:none}.rack{gap:4px;margin-top:10px}.belt{flex:1 1 0;min-width:0}.belt span{display:none}.belt i{height:14px}.belt i::after{display:none}main.band{padding:12px 12px 24px}.matcard{padding:14px;border-radius:14px}h2{font-size:20px}.task{padding:8px 12px;margin:10px 0}.opts{gap:8px;margin-top:10px}.opt{padding:12px 14px}.th{padding:8px 10px;display:flex;align-items:center;gap:6px;min-width:0}.th b{flex:1;min-width:0;font-size:14px;line-height:1.15}.th b svg{width:18px;height:18px;margin-right:6px}.th em{float:none;order:2;white-space:nowrap;font-size:12px}.th{min-height:40px}.themes{gap:6px}.th .ip{display:none}.th small{display:none}.saym{display:block;margin:0 0 8px;font-size:14px;color:var(--mute);min-height:1.4em}.meta{margin-bottom:4px}}
 .foot{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:14px}
 .foot .btn{padding:6px 14px;min-height:40px;font-size:14px}
 </style>
@@ -1058,7 +1058,7 @@ const qsOf=i=>TH().qs?TH().qs[i]:BELTS[i].qs;
 const buildOf=()=>TH().build||L.build, freeOf=()=>TH().free||L.free;
 function resume(){const p=st.pos[st.theme];if(p&&BELTS[p.i]&&BELTS[p.i].type==="pick"){st.cur=p.i;rack();pick(p.i,p.q,p.right)}else{rack();start(Math.min(st.cur||0,BELTS.length-1),true)}}
 function themes(){
-  $("#themes").innerHTML=`<h3>${U.themesLabel}</h3>`+L.themes.map(t=>`<button class="th" aria-pressed="${t.id===st.theme}" data-t="${t.id}"><em>${(st.won[t.id]||[]).length}/7${st.pos[t.id]&&t.id!==st.theme?" · "+U.inProgress:""}</em><b>${ICONS[t.icon]||""}${esc(t.name)}</b><small>${esc(t.blurb)}</small></button>`).join("");
+  $("#themes").innerHTML=`<h3>${U.themesLabel}</h3>`+L.themes.map(t=>`<button class="th" aria-pressed="${t.id===st.theme}" data-t="${t.id}"><em>${(st.won[t.id]||[]).length}/7${st.pos[t.id]&&t.id!==st.theme?`<span class="ip"> · ${U.inProgress}</span>`:""}</em><b>${ICONS[t.icon]||""}${esc(t.name)}</b><small>${esc(t.blurb)}</small></button>`).join("");
 }
 $("#themes").addEventListener("click",e=>{const b=e.target.closest(".th");if(!b||b.dataset.t===st.theme)return;
   const from=TH().name;st.theme=b.dataset.t;const p=st.pos[st.theme],w=W();
